@@ -41,7 +41,7 @@ async def generate_samples_for_scenario(
     memory_facts: list[str] | None,
     num_samples: int,
     scenario_index: int,
-    faiss_store: FaissStore,
+    faiss_store: FaissStore | None,
 ) -> list[dict]:
     """Generate *num_samples* QA pairs for a single scenario."""
     await send_event(
@@ -113,20 +113,24 @@ async def generate_samples_for_scenario(
             sample_text = _sample_to_text(sample)
             accepted = False
 
-            try:
-                emb = await get_embedding(sample_text)
-                is_dup, score = faiss_store.is_duplicate(emb)
-                if not is_dup:
-                    faiss_store.add(emb)
-                    accepted = True
-                else:
-                    log.debug(
-                        "Duplicate (score=%.3f) — skipping sample in scenario %d",
-                        score, scenario_index,
-                    )
-            except Exception as emb_exc:
-                log.warning("Embedding/dedup error: %s — accepting sample without dedup", emb_exc)
+            if faiss_store is None:
+                # Dedup skipped — accept all samples
                 accepted = True
+            else:
+                try:
+                    emb = await get_embedding(sample_text)
+                    is_dup, score = faiss_store.is_duplicate(emb)
+                    if not is_dup:
+                        faiss_store.add(emb)
+                        accepted = True
+                    else:
+                        log.debug(
+                            "Duplicate (score=%.3f) — skipping sample in scenario %d",
+                            score, scenario_index,
+                        )
+                except Exception as emb_exc:
+                    log.warning("Embedding/dedup error: %s — accepting sample without dedup", emb_exc)
+                    accepted = True
 
             if accepted:
                 all_samples.append(sample)
@@ -165,11 +169,14 @@ async def run_all_generators(
     approved_prompt: str,
     memory_facts: list[str] | None,
     target_size: int,
+    skip_dedup: bool = False,
+    dedup_threshold: float | None = None,
 ) -> list[dict]:
     """Distribute sample targets across scenarios and run concurrently."""
     await send_event("stage_update", {"stage": 4, "status": "running", "label": "Generating dataset"})
 
-    faiss_store = FaissStore(dimension=1024, threshold=DEDUP_THRESHOLD)
+    threshold = dedup_threshold if dedup_threshold is not None else DEDUP_THRESHOLD
+    faiss_store: FaissStore | None = None if skip_dedup else FaissStore(dimension=1024, threshold=threshold)
 
     num_scenarios = len(scenarios)
     base_per_scenario = target_size // num_scenarios

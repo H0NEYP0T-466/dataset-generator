@@ -52,6 +52,8 @@ class GenerateRequest(BaseModel):
     prompt: str = Field(..., min_length=1, description="Raw user prompt")
     memory_facts: list[str] = Field(default_factory=list, description="Memory facts for consistency")
     dataset_size: int = Field(default=100, ge=1, le=MAX_DATASET_SIZE, description="Target dataset size")
+    skip_dedup: bool = Field(default=False, description="Skip deduplication check")
+    dedup_threshold: float = Field(default=0.85, ge=0.0, le=1.0, description="Similarity threshold for deduplication")
 
 
 class GenerateResponse(BaseModel):
@@ -87,6 +89,8 @@ async def _run_pipeline(req: GenerateRequest) -> None:
             approved_prompt=approved,
             memory_facts=req.memory_facts or [],
             target_size=req.dataset_size,
+            skip_dedup=req.skip_dedup,
+            dedup_threshold=req.dedup_threshold,
         )
 
         elapsed = time.time() - start
@@ -112,6 +116,7 @@ async def _run_pipeline(req: GenerateRequest) -> None:
 
         await send_event("complete", {
             "total_samples": len(samples),
+            "scenarios": len(scenarios),
             "elapsed_seconds": round(elapsed, 2),
         })
         log.info("Pipeline complete — %d samples in %.1fs", len(samples), elapsed)
