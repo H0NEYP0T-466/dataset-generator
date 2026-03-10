@@ -48,7 +48,7 @@ function App() {
     const es = createSSEConnection();
     sseRef.current = es;
 
-    es.addEventListener('stage', (e: MessageEvent) => {
+    es.addEventListener('stage_update', (e: MessageEvent) => {
       try {
         const data = JSON.parse(e.data) as StageInfo;
         setPipelineState(prev => {
@@ -76,22 +76,40 @@ function App() {
     });
 
     es.addEventListener('log', (e: MessageEvent) => {
-      setPipelineState(prev => ({
-        ...prev,
-        logs: [...prev.logs, e.data],
-      }));
+      try {
+        const data = JSON.parse(e.data) as { stage: number; cycle: number; approved: boolean; confidence: number; feedback: string };
+        const msg = `[Stage ${data.stage}] Cycle ${data.cycle}: ${data.approved ? '✅ Approved' : '⏳ Revising'} (confidence: ${data.confidence}) — ${data.feedback}`;
+        setPipelineState(prev => ({
+          ...prev,
+          logs: [...prev.logs, msg],
+        }));
+      } catch {
+        setPipelineState(prev => ({
+          ...prev,
+          logs: [...prev.logs, e.data],
+        }));
+      }
     });
 
     es.addEventListener('model_switch', (e: MessageEvent) => {
-      setPipelineState(prev => ({
-        ...prev,
-        modelSwitches: [...prev.modelSwitches, e.data],
-      }));
+      try {
+        const data = JSON.parse(e.data) as { from: string; reason: string };
+        const msg = `Switched from ${data.from}: ${data.reason}`;
+        setPipelineState(prev => ({
+          ...prev,
+          modelSwitches: [...prev.modelSwitches, msg],
+        }));
+      } catch {
+        setPipelineState(prev => ({
+          ...prev,
+          modelSwitches: [...prev.modelSwitches, e.data],
+        }));
+      }
     });
 
     es.addEventListener('complete', (e: MessageEvent) => {
       try {
-        const data = JSON.parse(e.data) as { total_samples: number; scenarios: number };
+        const data = JSON.parse(e.data) as { total_samples: number; scenarios?: number; elapsed_seconds?: number };
         setPipelineState(prev => ({
           ...prev,
           totalSamples: data.total_samples,
@@ -113,11 +131,19 @@ function App() {
       sseRef.current = null;
     });
 
-    es.addEventListener('error_event', (e: MessageEvent) => {
-      setPipelineState(prev => ({
-        ...prev,
-        error: e.data,
-      }));
+    es.addEventListener('error', (e: MessageEvent) => {
+      try {
+        const data = JSON.parse(e.data) as { message: string };
+        setPipelineState(prev => ({
+          ...prev,
+          error: data.message,
+        }));
+      } catch {
+        setPipelineState(prev => ({
+          ...prev,
+          error: e.data,
+        }));
+      }
       setIsRunning(false);
       if (timerRef.current) {
         clearInterval(timerRef.current);
