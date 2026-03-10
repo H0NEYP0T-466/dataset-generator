@@ -50,14 +50,14 @@ async def expand_prompt(
         raise RuntimeError("No available model for prompt expansion")
 
     try:
-        expanded = await call_model(model, messages, temperature=0.7, max_tokens=2048)
+        expanded = await call_model(model, messages, temperature=0.7, max_tokens=8192)
     except Exception as exc:
         log.warning("Model %s failed: %s — switching", model, exc)
         await send_event("model_switch", {"from": model, "reason": str(exc)})
         model = handle_model_error(model, exc)
         if model is None:
             raise RuntimeError("All models exhausted during prompt expansion") from exc
-        expanded = await call_model(model, messages, temperature=0.7, max_tokens=2048)
+        expanded = await call_model(model, messages, temperature=0.7, max_tokens=8192)
 
     save_text("stage1_expanded_prompt.txt", expanded)
     await send_event("stage_update", {"stage": 1, "status": "complete", "label": "Prompt expanded"})

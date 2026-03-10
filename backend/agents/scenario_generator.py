@@ -14,7 +14,7 @@ that fully cover the topic. Each scenario should represent a distinct sub-topic,
 case, difficulty level, or user-intent variation.
 
 Rules:
-- Generate between 8 and 30 scenarios
+- Generate between 10 and 30 scenarios
 - Each scenario is a SHORT heading (one line)
 - Cover easy, medium, and hard difficulty
 - Include common AND edge-case situations

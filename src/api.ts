@@ -1,6 +1,6 @@
 import type { GenerateRequest, ModelStatus } from './types';
 
-const API_BASE = '/api';
+const API_BASE = 'http://localhost:8004/api';
 
 export async function startGeneration(req: GenerateRequest): Promise<{ status: string; message: string }> {
   const res = await fetch(`${API_BASE}/generate`, {

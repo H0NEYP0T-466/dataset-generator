@@ -140,12 +140,13 @@ MODEL_CONFIGS: dict[str, dict] = {
 # Model priority for auto-switching (first = preferred)
 # ---------------------------------------------------------------------------
 MODEL_PRIORITY: list[str] = [
+    "LongCat-Flash-Lite",
+    "gpt-oss-120b",
+    "mistral-large-2411",
     "moonshotai/kimi-k2-instruct",
     "llama-3.3-70b-versatile",
     "qwen/qwen3-32b",
     "llama-4-scout-17b-16e-instruct",
-    "mistral-large-2411",
-    "gpt-oss-120b",
     "LongCat-Flash-Thinking-2601",
     "LongCat-Flash-Thinking",
     "LongCat-Flash-Chat",
@@ -153,7 +154,6 @@ MODEL_PRIORITY: list[str] = [
     "open-mixtral-8x22b",
     "llama-3.1-8b-instant",
     "llama3.1-8b",
-    "LongCat-Flash-Lite",
 ]
 
 # ---------------------------------------------------------------------------
