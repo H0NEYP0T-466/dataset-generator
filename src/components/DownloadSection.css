@@ -1,0 +1,64 @@
+.download-section {
+  background: #111;
+  border: 1px solid #00ff99;
+  border-radius: 12px;
+  padding: 32px;
+  margin-bottom: 24px;
+  text-align: center;
+  box-shadow: 0 0 24px rgba(0, 255, 153, 0.1);
+}
+
+.download-title {
+  color: #00ff99;
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0 0 24px 0;
+}
+
+.download-meta {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.meta-value {
+  color: #00aaff;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.meta-label {
+  color: #888;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 4px;
+}
+
+.btn-download {
+  display: inline-block;
+  background: rgba(0, 255, 153, 0.15);
+  border: 2px solid #00ff99;
+  border-radius: 10px;
+  color: #00ff99;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 14px 36px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-download:hover {
+  background: rgba(0, 255, 153, 0.25);
+  box-shadow: 0 0 24px rgba(0, 255, 153, 0.35);
+}

@@ -1,0 +1,121 @@
+.model-dashboard {
+  background: #111;
+  border: 1px solid #1a1a1a;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.dashboard-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 16px 24px;
+  cursor: pointer;
+  text-align: left;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.dashboard-toggle:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.toggle-icon {
+  color: #00aaff;
+  font-size: 0.75rem;
+}
+
+.dashboard-title {
+  color: #00aaff;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0;
+  flex: 1;
+}
+
+.model-count {
+  color: #555;
+  font-size: 0.8rem;
+}
+
+.dashboard-content {
+  padding: 0 24px 24px;
+}
+
+.dashboard-error {
+  background: rgba(255, 68, 68, 0.1);
+  border: 1px solid #ff4444;
+  border-radius: 8px;
+  color: #ff4444;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  margin-bottom: 16px;
+}
+
+.dashboard-empty {
+  color: #555;
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 20px;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.model-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+.model-table th {
+  text-align: left;
+  color: #888;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 8px 12px;
+  border-bottom: 1px solid #1a1a1a;
+  font-size: 0.7rem;
+}
+
+.model-table td {
+  padding: 10px 12px;
+  color: #e0e0e0;
+  border-bottom: 1px solid #0f0f0f;
+}
+
+.model-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.model-name {
+  color: #00aaff;
+  font-weight: 500;
+}
+
+.status-badge {
+  font-size: 0.75rem;
+  padding: 3px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.status-badge.available {
+  color: #00ff99;
+  background: rgba(0, 255, 153, 0.08);
+}
+
+.status-badge.near-limit {
+  color: #ffaa00;
+  background: rgba(255, 170, 0, 0.08);
+}
+
+.status-badge.exhausted {
+  color: #ff4444;
+  background: rgba(255, 68, 68, 0.08);
+}
