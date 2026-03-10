@@ -116,6 +116,9 @@ function App() {
           isComplete: true,
         }));
         setScenariosCount(data.scenarios ?? 0);
+        if (data.elapsed_seconds !== undefined) {
+          setElapsedTime(Math.round(data.elapsed_seconds));
+        }
       } catch {
         setPipelineState(prev => ({
           ...prev,

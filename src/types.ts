@@ -2,6 +2,8 @@ export interface GenerateRequest {
   prompt: string;
   memory_facts: string[];
   dataset_size: number;
+  skip_dedup?: boolean;
+  dedup_threshold?: number;
 }
 
 export interface ModelStatus {
