@@ -4,3 +4,7 @@ data/
 .env
 venv
 /venv
+backend/storage/stage1_expanded_prompt.txt
+backend/storage/stage2_scenarios.txt
+backend/storage/stage3_scenarios_with_responses.jsonl
+backend/storage/final_dataset.jsonl

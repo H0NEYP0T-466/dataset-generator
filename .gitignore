@@ -23,3 +23,9 @@ dist-ssr
 *.sln
 *.sw?
 backend/__pycache__/
+backend/storage/stage1_expanded_prompt.txt
+backend/storage/stage2_scenarios.txt
+backend/storage/stage3_scenarios_with_responses.jsonl
+backend/storage/dataset_final.jsonl
+backend/storage/stage2_approved_prompt.txt
+backend/storage/stage3_scenarios.txt
