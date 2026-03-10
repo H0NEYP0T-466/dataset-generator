@@ -15,8 +15,8 @@ MISTRAL_API_KEY = os.getenv("MISTRAL_API_KEY", "")
 # ---------------------------------------------------------------------------
 # Provider base URLs
 # ---------------------------------------------------------------------------
-GROQ_BASE = "https://api.groq.com/openai/v1"
-LONGCAT_BASE = "https://api.longcat.cloud/openai/v1"
+GROQ_BASE ="https://api.groq.com/openai/v1"
+LONGCAT_BASE = "https://api.longcat.chat/openai"
 CEREBRAS_BASE = "https://api.cerebras.ai/v1"
 MISTRAL_BASE = "https://api.mistral.ai/v1"
 
