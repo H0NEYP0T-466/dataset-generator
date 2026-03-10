@@ -91,6 +91,12 @@ async def _run_pipeline(req: GenerateRequest) -> None:
 
         elapsed = time.time() - start
 
+        # Stage 5 — Deduplication (completed as part of Stage 4)
+        await send_event("stage_update", {"stage": 5, "status": "complete", "label": "Deduplication complete"})
+
+        # Stage 6 — Assembly
+        await send_event("stage_update", {"stage": 6, "status": "running", "label": "Assembling dataset"})
+
         # Save metadata
         metadata = {
             "prompt": req.prompt,
@@ -101,6 +107,8 @@ async def _run_pipeline(req: GenerateRequest) -> None:
             "elapsed_seconds": round(elapsed, 2),
         }
         save_json("metadata.json", metadata)
+
+        await send_event("stage_update", {"stage": 6, "status": "complete", "label": "Assembly complete"})
 
         await send_event("complete", {
             "total_samples": len(samples),
