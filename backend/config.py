@@ -162,6 +162,11 @@ MODEL_PRIORITY: list[str] = [
 DEDUP_THRESHOLD: float = float(os.getenv("DEDUP_THRESHOLD", "0.85"))
 
 # ---------------------------------------------------------------------------
+# Dataset generation limits
+# ---------------------------------------------------------------------------
+MAX_DATASET_SIZE: int = int(os.getenv("MAX_DATASET_SIZE", "200000"))
+
+# ---------------------------------------------------------------------------
 # Storage
 # ---------------------------------------------------------------------------
 STORAGE_DIR: Path = Path(__file__).resolve().parent / "storage"

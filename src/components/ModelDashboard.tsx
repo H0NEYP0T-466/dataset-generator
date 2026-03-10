@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import type { ModelStatus } from '../types';
 import { getModelStatus } from '../api';
 import './ModelDashboard.css';
@@ -11,26 +11,36 @@ export default function ModelDashboard({ isRunning }: ModelDashboardProps) {
   const [models, setModels] = useState<ModelStatus[]>([]);
   const [collapsed, setCollapsed] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  const fetchModels = useCallback(async () => {
-    try {
-      const data = await getModelStatus();
-      setModels(data);
-      setError(null);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch models');
-    }
-  }, []);
+  const mountedRef = useRef(false);
 
   useEffect(() => {
+    mountedRef.current = true;
+    let cancelled = false;
+
+    const fetchModels = async () => {
+      try {
+        const data = await getModelStatus();
+        if (!cancelled) {
+          setModels(data);
+          setError(null);
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setError(err instanceof Error ? err.message : 'Failed to fetch models');
+        }
+      }
+    };
+
     fetchModels();
-  }, [fetchModels]);
 
-  useEffect(() => {
-    if (!isRunning) return;
-    const interval = setInterval(fetchModels, 10000);
-    return () => clearInterval(interval);
-  }, [isRunning, fetchModels]);
+    const interval = isRunning ? setInterval(fetchModels, 10000) : undefined;
+
+    return () => {
+      cancelled = true;
+      mountedRef.current = false;
+      if (interval) clearInterval(interval);
+    };
+  }, [isRunning]);
 
   const getStatusBadge = (model: ModelStatus) => {
     if (!model.available || model.blacklisted) {

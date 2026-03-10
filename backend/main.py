@@ -14,6 +14,7 @@ from agents.dataset_generator import run_all_generators
 from agents.manager_agent import approval_loop
 from agents.prompt_expander import expand_prompt
 from agents.scenario_generator import generate_scenarios
+from config import MAX_DATASET_SIZE
 from logger.setup import get_logger
 from models.model_router import get_model_status, reset_usage
 from storage.file_manager import (
@@ -50,7 +51,7 @@ app.add_middleware(
 class GenerateRequest(BaseModel):
     prompt: str = Field(..., min_length=1, description="Raw user prompt")
     memory_facts: list[str] = Field(default_factory=list, description="Memory facts for consistency")
-    dataset_size: int = Field(default=100, ge=1, le=10000, description="Target dataset size")
+    dataset_size: int = Field(default=100, ge=1, le=MAX_DATASET_SIZE, description="Target dataset size")
 
 
 class GenerateResponse(BaseModel):

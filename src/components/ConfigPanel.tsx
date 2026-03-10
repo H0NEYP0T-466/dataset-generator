@@ -98,7 +98,7 @@ export default function ConfigPanel({ isRunning, onStart, onReset }: ConfigPanel
           id="memory-input"
           value={memoryFacts}
           onChange={e => setMemoryFacts(e.target.value)}
-          placeholder={"Company name is Acme Corp\nSupport hours are 9am-5pm EST\nRefund policy is 30 days"}
+          placeholder="Company name is Acme Corp&#10;Support hours are 9am-5pm EST&#10;Refund policy is 30 days"
           rows={3}
           disabled={isRunning}
         />
