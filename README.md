@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <h1>dataset-generator</h1>
 <p>
   <strong><strong>Generates high-quality LLM datasets with AI agents and real-time progress tracking.</strong></strong>
@@ -6,6 +7,9 @@
   <em><em>An intelligent pipeline that transforms prompts into diverse, deduplicated training data using multiple AI models with live monitoring.</em></em>
 </p>
 <p>
+=======
+# DataForge
+>>>>>>> 8af0efa4eda13b313c5b2c56764fce17625caf87
 
   <img src="https://img.shields.io/github/license/H0NEYP0T-466/dataset-generator?style=for-the-badge&amp;color=brightgreen">
   <img src="https://img.shields.io/github/stars/H0NEYP0T-466/dataset-generator?style=for-the-badge&amp;color=yellow">
@@ -949,10 +953,12 @@ The MIT License grants users the freedom to:
 
 This licensing approach aligns with the open and collaborative development model promoted by the project, encouraging contributions and community-driven improvements while maintaining clear legal boundaries. The presence of standard open-source files such as `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, and `SECURITY.md` further reflects the project’s commitment to responsible and inclusive software stewardship.
 
+<<<<<<< HEAD
 By using, modifying, or distributing this software, you agree to abide by the terms of the MIT License. A full copy of the license text should accompany the repository and can typically be found in the root directory as `LICENSE` (though not explicitly listed in the provided file summary, it is standard practice for MIT-licensed projects).
 
 🔐 **Note**: While the core application logic is open, third-party AI models and APIs used during dataset generation (e.g., Mistral AI, Groq, Cerebras via backend/config.py) may be governed by their own separate terms of service and usage policies. Users are responsible for ensuring compliance with those external agreements when deploying or using the generated datasets.
+=======
 
----
+>>>>>>> 8af0efa4eda13b313c5b2c56764fce17625caf87
 
 <p align="center">Made with ❤️ by <a href="https://github.com/H0NEYP0T-466">H0NEYP0T-466</a></p>
