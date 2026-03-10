@@ -169,7 +169,7 @@ MAX_DATASET_SIZE: int = int(os.getenv("MAX_DATASET_SIZE", "200000"))
 # ---------------------------------------------------------------------------
 # Storage
 # ---------------------------------------------------------------------------
-STORAGE_DIR: Path = Path(__file__).resolve().parent / "storage"
+STORAGE_DIR: Path = Path(__file__).resolve().parent / "data"
 STORAGE_DIR.mkdir(parents=True, exist_ok=True)
 
 # ---------------------------------------------------------------------------
