@@ -32,8 +32,16 @@ async def event_generator() -> AsyncGenerator[dict, None]:
         yield item
 
 
+async def send_sentinel() -> None:
+    """Push a None sentinel to signal the end of the SSE stream."""
+    await _event_queue.put(None)
+
+
 def reset_queue() -> None:
-    """Drain and reset the global event queue (for fresh pipeline runs)."""
-    global _event_queue
-    _event_queue = asyncio.Queue()
-    log.debug("SSE event queue reset")
+    """Drain the existing event queue for a fresh pipeline run."""
+    while not _event_queue.empty():
+        try:
+            _event_queue.get_nowait()
+        except asyncio.QueueEmpty:
+            break
+    log.debug("SSE event queue drained")

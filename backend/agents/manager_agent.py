@@ -79,7 +79,7 @@ async def approval_loop(
 
     current_prompt = expanded_prompt
 
-    for cycle in range(1, MAX_REJECTION_CYCLES + 2):  # 1..4
+    for cycle in range(1, MAX_REJECTION_CYCLES + 1):
         log.info("Manager review cycle %d", cycle)
         approved, feedback, confidence = await review_prompt(current_prompt)
 
@@ -98,7 +98,7 @@ async def approval_loop(
             log.info("Prompt approved (confidence=%.2f)", confidence)
             break
 
-        if cycle > MAX_REJECTION_CYCLES:
+        if cycle == MAX_REJECTION_CYCLES:
             log.warning("Max rejections reached — auto-approving on cycle %d", cycle)
             break
 

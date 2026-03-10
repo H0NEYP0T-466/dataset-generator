@@ -11,6 +11,18 @@ from logger.setup import get_logger
 log = get_logger("model_router")
 
 # ---------------------------------------------------------------------------
+# Shared HTTP client (created lazily, reused across calls)
+# ---------------------------------------------------------------------------
+_http_client: httpx.AsyncClient | None = None
+
+
+def _get_client() -> httpx.AsyncClient:
+    global _http_client
+    if _http_client is None or _http_client.is_closed:
+        _http_client = httpx.AsyncClient(timeout=120.0)
+    return _http_client
+
+# ---------------------------------------------------------------------------
 # In-memory usage tracking
 # ---------------------------------------------------------------------------
 _model_usage: dict[str, dict[str, int]] = {}
@@ -94,8 +106,8 @@ async def call_model(
 
     log.debug("Calling %s  (temp=%.1f, max_tokens=%d)", model_name, temperature, max_tokens)
 
-    async with httpx.AsyncClient(timeout=120.0) as client:
-        resp = await client.post(url, json=payload, headers=headers)
+    client = _get_client()
+    resp = await client.post(url, json=payload, headers=headers)
 
     if resp.status_code == 429:
         raise httpx.HTTPStatusError(

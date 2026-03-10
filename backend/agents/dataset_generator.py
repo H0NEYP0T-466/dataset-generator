@@ -32,7 +32,6 @@ Rules:
 - Ensure diversity across samples"""
 
 MEMORY_INJECTION_INTERVAL = 20
-MAX_DUP_RETRIES = 3
 
 
 async def generate_samples_for_scenario(
@@ -109,26 +108,24 @@ async def generate_samples_for_scenario(
                 break
 
             sample_text = _sample_to_text(sample)
-            dup_passed = False
+            accepted = False
 
-            for retry in range(MAX_DUP_RETRIES + 1):
-                try:
-                    emb = await get_embedding(sample_text)
-                    is_dup, score = faiss_store.is_duplicate(emb)
-                    if not is_dup:
-                        faiss_store.add(emb)
-                        dup_passed = True
-                        break
+            try:
+                emb = await get_embedding(sample_text)
+                is_dup, score = faiss_store.is_duplicate(emb)
+                if not is_dup:
+                    faiss_store.add(emb)
+                    accepted = True
+                else:
                     log.debug(
-                        "Duplicate (score=%.3f) on retry %d for scenario %d",
-                        score, retry, scenario_index,
+                        "Duplicate (score=%.3f) — skipping sample in scenario %d",
+                        score, scenario_index,
                     )
-                except Exception as emb_exc:
-                    log.warning("Embedding/dedup error: %s — skipping dedup", emb_exc)
-                    dup_passed = True
-                    break
+            except Exception as emb_exc:
+                log.warning("Embedding/dedup error: %s — accepting sample without dedup", emb_exc)
+                accepted = True
 
-            if dup_passed:
+            if accepted:
                 all_samples.append(sample)
                 append_jsonl("dataset_final.jsonl", sample)
                 generated += 1

@@ -22,7 +22,7 @@ from storage.file_manager import (
     load_text,
     save_json,
 )
-from streaming.sse_manager import event_generator, reset_queue, send_event
+from streaming.sse_manager import event_generator, reset_queue, send_event, send_sentinel
 
 log = get_logger("main")
 
@@ -111,8 +111,7 @@ async def _run_pipeline(req: GenerateRequest) -> None:
         log.error("Pipeline failed: %s", exc, exc_info=True)
         await send_event("error", {"message": str(exc)})
     finally:
-        # Send sentinel to close the SSE stream
-        await send_event("complete", {"done": True})
+        await send_sentinel()
         _pipeline_running = False
 
 
