@@ -129,6 +129,7 @@ async def start_generation(req: GenerateRequest):
         raise HTTPException(status_code=409, detail="A pipeline is already running")
 
     # Reset state for a fresh run
+    clear_storage()
     reset_queue()
     reset_usage()
 

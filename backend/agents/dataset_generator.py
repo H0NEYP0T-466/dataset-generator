@@ -32,6 +32,7 @@ Rules:
 - Ensure diversity across samples"""
 
 MEMORY_INJECTION_INTERVAL = 20
+MAX_DUPLICATE_BATCHES = 10  # stop a scenario after this many consecutive all-duplicate batches
 
 
 async def generate_samples_for_scenario(
@@ -51,6 +52,7 @@ async def generate_samples_for_scenario(
     all_samples: list[dict] = []
     generated = 0
     batch_size = min(num_samples, 5)  # request a handful at a time
+    consecutive_dup_batches = 0
 
     while generated < num_samples:
         remaining = num_samples - generated
@@ -103,6 +105,7 @@ async def generate_samples_for_scenario(
             continue
 
         # Dedup each sample
+        accepted_in_batch = 0
         for sample in samples:
             if generated >= num_samples:
                 break
@@ -129,6 +132,18 @@ async def generate_samples_for_scenario(
                 all_samples.append(sample)
                 append_jsonl("dataset_final.jsonl", sample)
                 generated += 1
+                accepted_in_batch += 1
+
+        if accepted_in_batch == 0:
+            consecutive_dup_batches += 1
+            if consecutive_dup_batches >= MAX_DUPLICATE_BATCHES:
+                log.warning(
+                    "Scenario %d: %d consecutive all-duplicate batches — stopping early at %d/%d",
+                    scenario_index, consecutive_dup_batches, generated, num_samples,
+                )
+                break
+        else:
+            consecutive_dup_batches = 0
 
         await send_event(
             "progress",
@@ -221,8 +236,15 @@ def _parse_samples(raw: str) -> list[dict]:
 
     valid: list[dict] = []
     for item in data:
-        if isinstance(item, dict) and "conversations" in item:
-            valid.append(item)
+        if not (isinstance(item, dict) and "conversations" in item):
+            continue
+        turns = item["conversations"]
+        if not isinstance(turns, list):
+            continue
+        turn_types = {t.get("from") for t in turns if isinstance(t, dict)}
+        if "human" not in turn_types or "gpt" not in turn_types:
+            continue
+        valid.append(item)
     return valid
 
 
