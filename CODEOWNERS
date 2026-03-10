@@ -1,0 +1,19 @@
+# CODEOWNERS
+
+# Default owner for all files
+* @H0NEYP0T-466
+
+# Backend-specific files
+backend/ @H0NEYP0T-466
+
+# Frontend-specific files (React/Vite application)
+src/ @H0NEYP0T-466
+*.tsx @H0NEYP0T-466
+*.ts @H0NEYP0T-466
+*.css @H0NEYP0T-466
+vite.config.ts @H0NEYP0T-466
+index.html @H0NEYP0T-466
+
+# Configuration files at repository root
+*.json @H0NEYP0T-466
+*.js @H0NEYP0T-466
