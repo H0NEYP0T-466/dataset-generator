@@ -1,4 +1,4 @@
-# H0NEYP0T-466/dataset-generator
+#DataForge
 
 ## Abstract 🚀
 
@@ -627,10 +627,6 @@ This project is licensed under the **MIT License** — a permissive open-source 
 - 📄 **License & Copyright Notice**: All redistributions of substantial portions of the source code must retain the original copyright notice, list of conditions, and disclaimer found in the `LICENSE` file (if present) or distributed with this software.
 - 📄 **State Changes**: If you modify the files, you must indicate changes made to them so that recipients know they differ from the original version.
 
-> 💡 **Note**: While the codebase summary does not explicitly include a visible `LICENSE` file in the listed structure (e.g., no mention of `LICENSE`, `LICENSE.txt`, etc.), the presence of standard development files like `package.json`, `tsconfig.json`, and typical backend configurations strongly suggests adherence to common open-source licensing practices. However, **you must verify the existence and contents of an actual `LICENSE` file at the root of the repository**, as this section assumes compliance with an MIT-style license based on industry norms for similar full-stack TypeScript + FastAPI projects.
 
-For full legal details, please refer to the official [MIT License](https://opensource.org/licenses/MIT).
-
----
 
 <p align="center">Made with ❤️ by <a href="https://github.com/H0NEYP0T-466">H0NEYP0T-466</a></p>
