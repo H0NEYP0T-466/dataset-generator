@@ -111,7 +111,7 @@ async def call_model(
 
     if resp.status_code == 429:
         raise httpx.HTTPStatusError(
-            "Rate limited", request=resp.request, response=resp
+            "Requests per minute limit reached", request=resp.request, response=resp
         )
 
     resp.raise_for_status()
