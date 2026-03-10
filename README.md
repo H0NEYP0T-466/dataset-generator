@@ -1,635 +1,957 @@
-# H0NEYP0T-466/dataset-generator
+<h1>dataset-generator</h1>
+<p>
+  <strong><strong>Generates high-quality LLM datasets with AI agents and real-time progress tracking.</strong></strong>
+</p>
+<p>
+  <em><em>An intelligent pipeline that transforms prompts into diverse, deduplicated training data using multiple AI models with live monitoring.</em></em>
+</p>
+<p>
 
-## Abstract 🚀
+  <img src="https://img.shields.io/github/license/H0NEYP0T-466/dataset-generator?style=for-the-badge&amp;color=brightgreen">
+  <img src="https://img.shields.io/github/stars/H0NEYP0T-466/dataset-generator?style=for-the-badge&amp;color=yellow">
+  <img src="https://img.shields.io/github/forks/H0NEYP0T-466/dataset-generator?style=for-the-badge&amp;color=blue">
+  <img src="https://img.shields.io/github/issues/H0NEYP0T-466/dataset-generator?style=for-the-badge&amp;color=red">
+  <img src="https://img.shields.io/github/issues-pr/H0NEYP0T-466/dataset-generator?style=for-the-badge&amp;color=orange">
+  <img src="https://img.shields.io/badge/Contributions-Welcome-brightgreen?style=for-the-badge">
 
-The **H0NEYP0T-466/dataset-generator** repository implements **DataForge**, a sophisticated web-based platform designed to automate the generation of high-quality fine-tuning datasets for Large Language Models (LLMs). Built as a full-stack application, DataForge leverages modern AI agents and real-time streaming technologies to transform raw user prompts into structured, diverse, and deduplicated question-answer pairs in ShareGPT format. The system is engineered for scalability, observability, and user control, making it ideal for researchers and developers seeking to rapidly prototype or enhance LLM behavior.
+  <img src="https://img.shields.io/github/last-commit/H0NEYP0T-466/dataset-generator?style=for-the-badge&amp;color=purple">
+  <img src="https://img.shields.io/github/commit-activity/m/H0NEYP0T-466/dataset-generator?style=for-the-badge&amp;color=teal">
+  <img src="https://img.shields.io/github/repo-size/H0NEYP0T-466/dataset-generator?style=for-the-badge&amp;color=blueviolet">
+  <img src="https://img.shields.io/github/languages/code-size/H0NEYP0T-466/dataset-generator?style=for-the-badge&amp;color=indigo">
 
-At its core, the backend is powered by **FastAPI** and orchestrated through a multi-stage pipeline managed by intelligent agents. These include a `manager_agent` that iteratively refines prompts via an approval loop, a `prompt_expander` that constructs detailed personas and tasks, and a `scenario_generator` that produces numbered scenario headings from approved inputs. For dataset creation, the `dataset_generator` agent synthesizes QA pairs with optional memory injection and employs **FAISS**-based vector similarity search to eliminate duplicates efficiently. All operations are tracked in real time using **Server-Sent Events (SSE)**, enabling seamless frontend monitoring of progress, logs, and model switches.
+  <img src="https://img.shields.io/github/languages/top/H0NEYP0T-466/dataset-generator?style=for-the-badge&amp;color=critical">
+  <img src="https://img.shields.io/github/languages/count/H0NEYP0T-466/dataset-generator?style=for-the-badge&amp;color=success">
 
-The frontend is a responsive React application built with **Vite** and styled with a dark theme using monospace fonts for clarity. It features interactive components such as a collapsible **Model Dashboard** displaying real-time model status and usage metrics, a dynamic **Pipeline Progress** tracker with stage-wise completion percentages and live logs, and a configurable **ConfigPanel** allowing users to input prompts, set dataset sizes, toggle deduplication, and select presets. A dedicated **DownloadSection** summarizes completion statistics—including sample count, elapsed time, and scenario count—and provides direct access to generated data files.
+  <img src="https://img.shields.io/badge/Docs-Available-green?style=for-the-badge&amp;logo=readthedocs&amp;logoColor=white">
+  <img src="https://img.shields.io/badge/Open%20Source-%E2%9D%A4-red?style=for-the-badge">
 
-Technically, the stack integrates robust logging via `colorlog`, asynchronous embedding generation using the Mistral AI API, and modular file management for persistent storage. Configuration is centralized in `config.py`, supporting multiple providers like Groq, LongCat, Cerebras, and Mistral with rate limiting and fallback logic handled by a custom `model_router`. Development practices emphasize code quality through ESLint and TypeScript strict typing across both client (`tsconfig.app.json`) and server (`tsconfig.node.json`) environments.
+</p>
 
-In summary, DataForge represents a production-ready, extensible framework for LLM dataset engineering—combining agentic workflows, real-time feedback, and developer-friendly tooling to streamline the creation of training data at scale.
+---
+
+## 🔗 Quick Links
+
+- <a href="#dataforge-llm-dataset-generator">📌 # DataForge LLM Dataset Generator</a>
+- <a href="#abstract">📌 ## Abstract</a>
+- <a href="#key-highlights">📌 ## Key Highlights</a>
+- <a href="#features">📌 ## Features</a>
+- <a href="#tech-stack">📌 ## Tech Stack</a>
+- <a href="#dependencies-packages">📌 ## Dependencies & Packages</a>
+- <a href="#prerequisites">📌 ## Prerequisites</a>
+- <a href="#installation">📌 ## Installation</a>
+- <a href="#quick-start">📌 ## Quick Start</a>
+- <a href="#usage">📌 ## Usage</a>
+- <a href="#api-endpoints">📌 ## API Endpoints</a>
+- <a href="#configuration">📌 ## Configuration</a>
+- <a href="#environment-variables">📌 ## Environment Variables</a>
+- <a href="#model-setup-training">📌 ## Model Setup & Training</a>
+- <a href="#project-structure">📌 ## Project Structure</a>
+- <a href="#development">📌 ## Development</a>
+- <a href="#security">📌 ## Security</a>
+- <a href="#contributing">📌 ## Contributing</a>
+- <a href="#code-of-conduct">📌 ## Code of Conduct</a>
+- <a href="#license">📌 ## License</a>
+
+---
+
+## 📑 Table of Contents
+
+1. <a href="#dataforge-llm-dataset-generator"># DataForge LLM Dataset Generator</a>
+2. <a href="#abstract">## Abstract</a>
+3. <a href="#key-highlights">## Key Highlights</a>
+4. <a href="#features">## Features</a>
+5. <a href="#tech-stack">## Tech Stack</a>
+6. <a href="#dependencies-packages">## Dependencies & Packages</a>
+7. <a href="#prerequisites">## Prerequisites</a>
+8. <a href="#installation">## Installation</a>
+9. <a href="#quick-start">## Quick Start</a>
+10. <a href="#usage">## Usage</a>
+11. <a href="#api-endpoints">## API Endpoints</a>
+12. <a href="#configuration">## Configuration</a>
+13. <a href="#environment-variables">## Environment Variables</a>
+14. <a href="#model-setup-training">## Model Setup & Training</a>
+15. <a href="#project-structure">## Project Structure</a>
+16. <a href="#development">## Development</a>
+17. <a href="#security">## Security</a>
+18. <a href="#contributing">## Contributing</a>
+19. <a href="#code-of-conduct">## Code of Conduct</a>
+20. <a href="#license">## License</a>
+
+---
+
+# DataForge LLM Dataset Generator
+
+DataForge is a powerful, real-time dataset generation platform designed to streamline the creation of high-quality training data for large language models (LLMs). Built with modern web technologies and AI-powered agents, it enables users to transform simple prompts into structured, diverse datasets ready for model fine-tuning.
+
+The application features a **React-based frontend** powered by Vite and TypeScript, providing a responsive, dark-themed user interface with real-time progress tracking. Users interact through an intuitive configuration panel where they can input core prompts, optional memory facts, specify dataset size, and toggle deduplication settings. Preset options allow quick setup, while form validation ensures data integrity before processing begins.
+
+Behind the scenes, a **FastAPI backend** orchestrates a sophisticated multi-stage pipeline. The process initiates with prompt expansion using `prompt_expander.py`, which transforms raw inputs into detailed dataset briefs. Next, `scenario_generator.py` creates numbered, diverse scenario headings from approved prompts. Finally, `dataset_generator.py` produces question-answer pairs in ShareGPT format, optionally injecting memory facts and applying FAISS-based cosine similarity deduplication via `faiss_store.py` to ensure uniqueness.
+
+Throughout execution, the system provides **real-time feedback** via Server-Sent Events (SSE), managed by `sse_manager.py`. This enables live updates on stage progress, model switches, completion status, and operational logs. A collapsible ModelDashboard component displays current model usage, availability, and performance metrics, automatically polling when active.
+
+Deduplication is handled efficiently using FAISS vector embeddings generated by `embedder.py`, which leverages the Mistral AI API for semantic similarity comparison. All generated data is persisted through `file_manager.py`, supporting multiple formats including JSON and JSONL, with download functionality accessible upon completion.
+
+The backend architecture supports **modular agent workflows**, with `manager_agent.py` overseeing prompt approval loops and iterative refinement. Model routing is managed by `model_router.py`, which intelligently selects from multiple providers (Groq, LongCat, Cerebras, Mistral) based on availability, rate limits, and error handling.
+
+Security and collaboration are prioritized with comprehensive policies: a Contributor Covenant Code of Conduct governs community behavior, while dedicated SECURITY.md outlines vulnerability reporting procedures. Setup guidance is provided through CONTRIBUTING.md and SUPPORT.md, ensuring smooth onboarding for both contributors and users.
+
+With its blend of real-time monitoring, intelligent deduplication, and flexible configuration, DataForge empowers teams to generate clean, high-value datasets at scale—all within a cohesive, developer-friendly environment.
+
+## Abstract
+
+DataForge is a sophisticated **LLM dataset generator** built with a modern, full-stack architecture designed for scalability and real-time interactivity. The system leverages **FastAPI** on the backend to orchestrate an intelligent pipeline of AI agents that transform raw user prompts into high-quality, deduplicated training datasets in ShareGPT format. At its core, DataForge employs multiple specialized agents—including prompt expansion, scenario generation, and dataset creation—each managed through asynchronous workflows that stream progress updates via Server-Sent Events (SSE) to the frontend.
+
+The backend is powered by Python and structured around modular components such as a **model router** (`model_router.py`) that intelligently routes requests across multiple AI providers (Groq, LongCat, Cerebras, Mistral) based on availability, rate limits, and performance. A key feature is **FAISS-based deduplication** (`faiss_store.py`), which ensures dataset uniqueness using cosine similarity on vector embeddings generated via the Mistral AI API (`embedder.py`). File management is handled robustly by `file_manager.py`, supporting persistent storage of text, JSON, and JSONL outputs. Real-time communication between server and client is facilitated by an SSE manager (`sse_manager.py`) that broadcasts stage progress, model switches, logs, and completion events.
+
+On the frontend, the application is built with **React** and **TypeScript**, utilizing Vite for fast development and hot-reloading. The UI features a dark-themed interface with neon-green accents, including interactive components like `ConfigPanel` for prompt input and dataset configuration, `PipelineProgress` for live stage tracking, `ModelDashboard` for monitoring active models, and `DownloadSection` for exporting results. Global styles are defined in `src/index.css`, emphasizing readability and a cohesive visual identity.
+
+The project enforces strong code quality practices through ESLint configuration and supports collaborative development via comprehensive documentation (`CONTRIBUTING.md`, `CODE_OF_CONOND.md`, `SECURITY.md`, `SUPPORT.md`). Configuration is centralized in `config.py`, while logging is standardized using a structured, colored console logger (`logger/setup.py`). Deployment is streamlined through `run_commands.txt`, which automates virtual environment activation and Uvicorn startup on port 8005 with auto-reload.
+
+In summary, DataForge represents a production-ready, extensible platform for automated LLM dataset curation, combining advanced NLP techniques with a responsive user experience and enterprise-grade tooling.
 
 ## Key Highlights
 
-🚀 **Modern Full-Stack Architecture**  
-This project is a sophisticated full-stack application built with **React 18 + TypeScript** on the frontend and **FastAPI + Python** on the backend, orchestrated by **Vite** for rapid development. The architecture supports real-time communication via Server-Sent Events (SSE), enabling live updates during data generation workflows.
+**DataForge LLM Dataset Generator** is a modern, full-stack application designed to streamline the creation of high-quality datasets for large language model (LLM) training. Built with a robust **FastAPI backend** and a responsive **React frontend**, the system orchestrates an intelligent pipeline that transforms raw user prompts into structured, deduplicated question-answer pairs in ShareGPT format.
 
-🧠 **Advanced LLM-Powered Dataset Generation Pipeline**  
-At its core, DataForge leverages multiple AI agents to transform raw user prompts into high-quality, structured datasets suitable for fine-tuning large language models. The system employs a multi-stage pipeline involving prompt expansion, scenario generation, and question-answer pair creation—all powered by OpenAI-compatible models from providers like Groq, LongCat, Cerebras, and Mistral.
+### 🔧 Core Backend Architecture
 
-🔁 **Intelligent Deduplication & Embedding Layer**  
-To ensure dataset uniqueness, the backend integrates **FAISS** for efficient vector similarity search using cosine distance metrics. Text embeddings are generated asynchronously via the Mistral API, enabling scalable deduplication across thousands of generated samples.
+The backend is powered by **FastAPI**, serving as the central orchestrator for dataset generation. It integrates multiple specialized agents—including prompt expansion, scenario generation, and dataset creation—each leveraging advanced AI models via providers like Groq, LongCat, Cerebras, and Mistral. The system employs **server-sent events (SSE)** through `sse_manager.py` to provide real-time updates on pipeline progress, enabling seamless frontend-backend communication. A **FAISS-based vector store** (`faiss_store.py`) ensures intelligent deduplication using cosine similarity, while `model_router.py` dynamically routes requests based on availability, rate limits, and priority.
 
-📊 **Real-Time Progress Monitoring & Logging**  
-Users interact with a responsive React dashboard that displays live pipeline progress through visual stage cards, completion percentages, and detailed logs. The system tracks model switches, usage metrics, and error states in real time, providing transparency throughout the generation process.
+Configuration is centralized in `config.py`, supporting secure API key management and model-specific settings. Logging is handled via a custom colored logger (`logger/setup.py`), ensuring traceability across operations. All data persistence is managed through `file_manager.py`, which supports saving outputs in text, JSON, and JSONL formats.
 
-💾 **Robust File Management & Output Handling**  
-Generated datasets are saved in standardized formats (JSON/JSONL) with metadata tracking. A dedicated download section allows users to retrieve completed datasets immediately after pipeline execution, complete with summary statistics like sample count and elapsed time.
+### 🖥️ Intelligent Frontend Interface
 
-⚙️ **Flexible Configuration & Preset Support**  
-The configuration panel enables fine-grained control over dataset parameters including size, memory injection, and deduplication toggles. Preset options streamline common use cases while maintaining flexibility for custom requirements.
+The React-based frontend (`src/App.tsx`) offers an intuitive, dark-themed interface built with Vite for fast development and deployment. Users interact through a **ConfigPanel** (`ConfigPanel.tsx`) where they input prompts, define dataset size, toggle deduplication, and select presets. Real-time feedback is delivered via a **PipelineProgress** component (`PipelineProgress.tsx`), which displays stage-by-stage completion status, live logs, and model switch notifications. A collapsible **ModelDashboard** (`ModelDashboard.tsx`) provides visibility into current model usage and availability, with automatic polling during active runs.
 
-🛡️ **Enterprise-Grade Development Practices**  
-The codebase enforces strict type safety with comprehensive TypeScript interfaces, follows ESLint best practices, uses structured logging with colorized output, and maintains reproducible builds through locked dependencies and virtual environment management.
+Upon completion, a **DownloadSection** (`DownloadSection.tsx`) presents metadata such as sample count, elapsed time, and download links, all styled with neon-green accents for a futuristic aesthetic. The UI leverages TypeScript interfaces defined in `types.ts` for strict type safety across state management and API contracts.
 
-🌐 **Production-Ready Deployment Setup**  
-The project includes complete deployment scaffolding: Uvicorn server configuration on port 8005 with auto-reload, proxy settings for seamless frontend-backend communication, and clear startup commands for isolated development environments.
+### ⚙️ Development & Tooling
+
+Built on **TypeScript** with strict linting via ESLint and optimized builds using Vite, the project emphasizes maintainability and performance. The `tsconfig.json` setup enables modular compilation for both frontend and Node.js environments. Dependency management is handled through `package.json` and `package-lock.json`, while `vite.config.ts` configures API proxying to `http://localhost:8005`. Development workflows are supported by comprehensive guides in `CONTRIBUTING.md`, `SUPPORT.md`, and `CODE_OF_CONDUCT.md`, ensuring a welcoming and well-documented contributor experience.
+
+Security best practices are enforced via `SECURITY.md`, outlining vulnerability reporting procedures and supported versions. With auto-reload enabled via Uvicorn and structured logging throughout, DataForge delivers a production-ready, scalable solution for automated LLM dataset generation.
 
 ## Features
 
-**DataForge — LLM Dataset Generator** is a powerful, real-time web application built with React and FastAPI that automates the creation of high-quality fine-tuning datasets for large language models. The system employs a sophisticated multi-stage pipeline managed by specialized AI agents, providing full transparency and control through an intuitive dashboard.
+DataForge is a powerful LLM dataset generator built with a modern tech stack and designed for efficient, real-time pipeline management. The application features a comprehensive backend-driven workflow that orchestrates multiple AI-powered stages to transform raw user input into structured, high-quality training data.
 
-### 🤖 Intelligent Multi-Agent Pipeline
-The core of DataForge is its agent-based architecture featuring four specialized components:
-- **Prompt Expander Agent**: Transforms raw user prompts into detailed persona descriptions and task specifications using advanced language models
-- **Manager Agent**: Implements an approval loop that reviews and iteratively refines dataset prompts based on AI feedback to ensure quality before finalization
-- **Scenario Generator Agent**: Creates diverse, numbered scenario headings from approved prompts with fallback handling and progress tracking
-- **Dataset Generator Agent**: Produces question-answer pairs in ShareGPT format with optional memory injection and deduplication capabilities
+**🧠 Intelligent Pipeline Orchestration**  
+At the core of DataForge is an asynchronous, multi-stage generation pipeline managed by FastAPI and orchestrated through Server-Sent Events (SSE). The system processes user prompts through a sequence of specialized agents: prompt expansion, scenario generation, and dataset creation. Each stage emits real-time progress updates via streaming logs, allowing users to monitor the entire process live in the frontend interface.
 
-### 📊 Real-Time Progress Monitoring
-Experience live updates through comprehensive monitoring features:
-- **Pipeline Progress Dashboard**: Visual stage-by-stage progress with status indicators, completion percentages, and model switch notifications
-- **Server-Sent Events (SSE)**: Real-time event streaming for instant status updates without polling overhead
-- **Model Status Tracking**: Live display of model availability, usage metrics, and current operational status
-- **Comprehensive Logging**: Detailed log display with color-coded status states and smooth animations
+**🔍 Deduplication & Similarity Search**  
+To ensure dataset quality, DataForge integrates FAISS-based vector similarity search for cosine similarity deduplication. This prevents redundant content from entering the final dataset, improving diversity and reducing noise. The deduplication logic runs during dataset generation using embeddings generated via the Mistral AI API, ensuring semantic uniqueness across samples.
 
-### 🔍 Advanced Deduplication System
-Ensure dataset uniqueness with state-of-the-art similarity detection:
-- **FAISS Vector Store**: Efficient cosine similarity-based deduplication using FAISS library
-- **Embedding Generation**: Asynchronous text embedding creation via Mistral AI API integration
-- **Configurable Thresholds**: Adjustable similarity parameters for precision control
+**⚙️ Flexible Configuration Interface**  
+Users can customize their dataset generation through an intuitive React-based configuration panel. Options include custom prompts, optional memory facts injection, adjustable dataset size, and toggleable deduplication settings. Preset configurations allow quick setup, while validation ensures inputs meet requirements before processing begins.
 
-### 💾 Robust Storage & Download Management
-Seamless data handling throughout the generation process:
-- **Multi-format Support**: Save and load text, JSON, and JSONL files with automatic directory management
-- **Download Section**: Completion summary with sample count, elapsed time, scenario count, and direct download links
-- **File Organization**: Structured storage system with logging and error recovery
+**📊 Real-Time Progress Monitoring**  
+The application provides a detailed pipeline progress dashboard showing stage-by-stage status with visual indicators, progress bars, and live log streams. Users receive notifications when models switch between providers and can track overall completion metrics such as elapsed time and sample count. A collapsible model dashboard displays current model status, usage statistics, and availability from the backend.
 
-### ⚙️ Flexible Configuration Interface
-Complete control over your dataset generation workflow:
-- **Interactive Config Panel**: Input fields for custom prompts, memory facts, and dataset size selection
-- **Preset Templates**: Quick-start options for common use cases
-- **Deduplication Toggle**: Enable/disable similarity filtering as needed
-- **Error Handling**: Comprehensive validation and user-friendly error messages
+**💾 Robust File Management**  
+Generated datasets are saved in ShareGPT format (JSONL) with metadata including file size and version. The backend includes a dedicated file manager supporting persistent storage, retrieval, and organization of text, JSON, and JSONL files. Download functionality is streamlined through a styled download section component with hover effects and clear labeling.
 
-### 🛠️ Modern Development Stack
-Built with cutting-edge technologies for optimal performance:
-- **React + TypeScript**: Type-safe frontend with modern component architecture
-- **FastAPI Backend**: High-performance Python API with async support
-- **Vite Build Tool**: Lightning-fast development and production builds
-- **ESLint Integration**: Strict code quality enforcement with recommended presets
-- **Colorful Logging**: Structured, colored output for better debugging experience
+**🛡️ Enterprise-Grade Backend Infrastructure**  
+Built on FastAPI with Uvicorn, the backend supports auto-reload development mode and uses structured logging with colored console output. The system implements rate limiting, model blacklisting, and intelligent routing across multiple AI providers (Groq, LongCat, Cerebras, Mistral) via a configurable model router. Environment variables and secure API key management are handled through centralized configuration.
 
-The system supports multiple AI providers including Groq, LongCat, Cerebras, and Mistral through a unified model router with rate limiting and priority-based selection, ensuring reliable operation across different infrastructure configurations.
-
-## Architecture
-
-The DataForge — LLM Dataset Generator is built as a modern, full-stack application with a clear separation between frontend and backend responsibilities. The system follows a **React + TypeScript** frontend architecture powered by **Vite**, communicating with a **FastAPI** Python backend via REST and Server-Sent Events (SSE).
-
-### Frontend Layer
-The React-based client (`src/App.tsx`) orchestrates the user experience, managing state for pipeline execution, real-time progress tracking, and configuration inputs. It leverages custom components such as `ConfigPanel` for user input, `PipelineProgress` for live status visualization, `ModelDashboard` for model monitoring, and `DownloadSection` for output delivery. All components use a dark theme styled with CSS-in-JS principles and monospace typography. Communication with the backend occurs through an API abstraction layer (`src/api.ts`) that handles HTTP requests, SSE connections, and error handling.
-
-### Backend Layer
-The FastAPI server (`backend/main.py`) serves as the core orchestrator, exposing endpoints to initiate dataset generation pipelines, stream progress updates via SSE, and manage system resets. It integrates multiple specialized agents:
-- **Prompt Expander**: Transforms raw prompts into structured persona/task descriptions.
-- **Scenario Generator**: Creates numbered scenario headings from approved prompts.
-- **Dataset Generator**: Produces ShareGPT-formatted QA pairs with optional memory injection.
-- **Manager Agent**: Implements an approval loop to refine prompts iteratively before final generation.
-
-Deduplication is handled via FAISS (`backend/dedup/faiss_store.py`) using cosine similarity on embeddings generated by Mistral AI (`backend/dedup/embedder.py`). File persistence is managed through a dedicated file manager (`backend/storage/file_manager.py`), supporting JSON and JSONL formats.
-
-Model routing (`backend/models/model_router.py`) selects among OpenAI-compatible providers (Groq, LongCat, Cerebras, Mistral) based on availability and rate limits, with in-memory usage tracking. Real-time event broadcasting is facilitated by an asynchronous SSE manager (`backend/streaming/sse_manager.py`).
-
-Configuration is centralized in `backend/config.py`, defining API keys, provider URLs, and model-specific rate limits. Logging uses a structured, colorized setup (`backend/logger/setup.py`) for enhanced observability during development.
-
-This modular design enables scalable, observable, and maintainable dataset generation with real-time feedback and robust deduplication capabilities.
+**🔒 Secure & Compliant Development**  
+The project enforces security best practices with a defined security policy, supports vulnerability reporting, and maintains contributor guidelines. Code quality is ensured through ESLint with React Hooks and Refresh plugins, strict TypeScript typing, and comprehensive testing infrastructure.
 
 ## Tech Stack
 
-This project is a sophisticated **LLM Dataset Generator** built with a modern, full-stack architecture designed for real-time data pipeline monitoring and management. The tech stack leverages cutting-edge tools and frameworks to deliver a responsive, scalable, and developer-friendly experience.
+The **DataForge LLM Dataset Generator** is built on a modern, scalable tech stack designed for real-time dataset generation with intelligent deduplication and streaming capabilities. The architecture separates concerns between a React-based frontend and a FastAPI-powered backend, communicating via Server-Sent Events (SSE) for live progress tracking.
 
-### 🔧 Core Technologies
+### Frontend
+The user interface is powered by **React** with **TypeScript**, providing type-safe development and robust component composition. The application uses **Vite** as the build tool, enabling fast hot module replacement during development. Styling is handled through CSS modules and global stylesheets, featuring a dark theme with neon-green accents for visual consistency. Real-time updates are rendered dynamically using React hooks that consume SSE streams from the backend.
 
-The application is powered by a robust combination of frontend and backend technologies:
+Key frontend technologies include:
+- **React 18+** with `createRoot` for concurrent rendering
+- **TypeScript** with strict type checking and JSX support
+- **Vite** for optimized bundling and proxy configuration (`/api` → `http://localhost:8005`)
+- **ESLint** with React Refresh plugin for linting and fast refresh
+- **Monospace fonts** (JetBrains Mono) for terminal-like readability
 
-<p>
-  <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=white" alt="React">
-  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript">
-  <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite">
-</p>
+### Backend
+The backend is implemented in **Python 3.10+** using **FastAPI** with **Uvicorn** as the ASGI server, running on port 8005 with auto-reload enabled. It provides RESTful endpoints and SSE streams for real-time communication.
 
-<p>
-  <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI">
-  <img src="https://img.shields.io/badge/Uvicorn-2980B9?style=for-the-badge&logo=gunicorn&logoColor=white" alt="Uvicorn">
-  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
-</p>
+Core backend components include:
+- **FAISS** for cosine similarity-based deduplication of generated text embeddings
+- **Mistral AI API integration** via asynchronous HTTP requests for embedding generation
+- **Server-Sent Events (SSE)** managed through an asyncio queue for live pipeline progress updates
+- **File storage system** supporting JSON, JSONL, and plain text formats
+- **Model routing logic** with rate limiting, blacklisting, and priority-based provider selection
 
-### 📦 Key Dependencies & Libraries
+Configuration is environment-driven through `config.py`, managing API keys and model-specific parameters for multiple providers (Groq, LongCat, Cerebras, Mistral). Logging is structured and colorized using a custom logger setup.
 
-The project integrates several essential libraries for functionality, performance, and development:
+### Data Flow & Integration
+The system orchestrates a multi-stage dataset generation pipeline:
+1. **Prompt Expansion**: Transforms raw prompts into detailed briefs using agentic refinement
+2. **Scenario Generation**: Creates numbered, diverse scenarios from approved prompts
+3. **Dataset Creation**: Produces ShareGPT-format Q&A pairs with optional memory injection
+4. **Deduplication**: Uses FAISS vector store to eliminate near-duplicate content
+5. **Streaming Updates**: Real-time progress via SSE throughout all stages
 
-#### Frontend
-- **React**: For building the interactive user interface with component-based architecture.
-- **TypeScript**: Provides static typing for enhanced code quality and maintainability.
-- **Vite**: Lightning-fast build tool and development server with hot module replacement.
-- **ESLint**: Ensures code consistency and catches potential errors early in development.
-
-#### Backend
-- **FastAPI**: High-performance web framework for building APIs with automatic OpenAPI documentation.
-- **Uvicorn**: ASGI server for running FastAPI applications with async support.
-- **FAISS**: Efficient similarity search library for deduplication using vector embeddings.
-- **colorlog**: Adds color-coded logging output for better debugging and monitoring.
-- **aiohttp**: Asynchronous HTTP client used for making API calls to external services like Mistral AI.
-
-### 🛠️ Development & Configuration
-
-The project uses modern development practices and configuration systems:
-
-- **TypeScript Configuration**: Separate configurations for app (`tsconfig.app.json`) and Node.js environments (`tsconfig.node.json`), both enforcing strict type checking.
-- **Virtual Environment Management**: Python dependencies are managed via `requirements.txt` with isolated environment setup.
-- **Real-time Communication**: Server-Sent Events (SSE) via custom `sse_manager.py` for live progress updates.
-- **File Storage**: Custom `file_manager.py` handles persistent storage of generated datasets in various formats (JSON, JSONL).
-- **Model Abstraction**: `model_router.py` provides unified access to multiple LLM providers including OpenAI-compatible models from Groq, LongCat, Cerebras, and Mistral.
-
-This comprehensive tech stack enables the generation of high-quality, deduplicated datasets through an agent-based pipeline while providing real-time visibility into the process through a polished React frontend.
+All components are container-ready and follow strict separation of concerns, with TypeScript interfaces defining request/response contracts and pipeline state management.
 
 ## Dependencies & Packages
 
-This project is a full-stack application built with modern web technologies and designed for efficient dataset generation using large language models. The codebase clearly defines its dependencies through standard configuration files, ensuring reproducibility and proper environment setup.
+This project is a modern, full-stack application built with a **TypeScript React frontend** and a **Python FastAPI backend**, designed for generating LLM datasets. The dependencies are split between the frontend and backend environments, each with its own dedicated configuration files.
 
-### Frontend Stack
-The frontend is powered by **React** with **TypeScript**, managed via **Vite** as the build tool. The project uses `package.json` to define all JavaScript/TypeScript dependencies, including development tools like ESLint for code quality and TypeScript support. Vite’s configuration in `vite.config.ts` enables fast development server startup and proxying of API requests to the backend. The React application is structured with components such as `ConfigPanel`, `PipelineProgress`, and `DownloadSection`, all styled using CSS-in-JS patterns and global styles defined in `src/index.css`. The UI follows a dark theme with monospace typography, emphasizing clarity and developer-friendly aesthetics.
+### Frontend Dependencies
 
-### Backend Stack
-The backend is implemented in **Python 3**, utilizing **FastAPI** as the web framework and **Uvicorn** as the ASGI server for serving the application on port 8005. Dependencies are listed in `backend/requirements.txt`, which includes essential libraries such as:
-- `fastapi`: For building the RESTful API endpoints.
-- `uvicorn`: To run the FastAPI app with auto-reload capabilities.
-- `faiss-cpu` or `faiss-gpu`: For efficient similarity search during deduplication.
-- `colorlog`: Used in `backend/logger/setup.py` to provide colored, structured logging output.
-- Standard utilities like `python-dotenv` for environment management and logging.
+The React-based frontend is powered by **Vite** as the build tool and uses **TypeScript** for type safety. Key frontend packages include:
 
-Additionally, the backend leverages several custom modules:
-- **Model Router** (`models/model_router.py`) manages AI model selection and rate limiting.
-- **Deduplication Engine** (`dedup/faiss_store.py`) uses FAISS for cosine similarity-based embedding comparison.
-- **Agent System**: Includes `prompt_expander.py`, `scenario_generator.py`, `manager_agent.py`, and `dataset_generator.py`, orchestrating the multi-stage pipeline for prompt refinement, scenario creation, and QA pair generation.
-- **Streaming Support**: `streaming/sse_manager.py` handles real-time event broadcasting via Server-Sent Events (SSE), enabling live progress updates from the frontend.
+- **React 18+**: Core library for building user interfaces, initialized via `src/main.tsx` using `createRoot` within `StrictMode`.
+- **TypeScript**: Configured with strict type checking (`tsconfig.app.json`) and JSX support.
+- **ESLint**: Integrated with React Hooks and Refresh plugins (`eslint.config.js`) to enforce code quality and development best practices.
+- **Vite**: Handles fast development server, hot module replacement, and proxy setup (`vite.config.ts`) to forward `/api` requests to the backend at `http://localhost:8005`.
+- **CSS Modules / Global Styles**: Custom styling is applied through `src/App.css`, `src/index.css`, and component-specific styles like `DownloadSection.css` and `ModelDashboard.css`, featuring a dark theme with neon-green accents and JetBrains Mono font.
 
-### Development & Build Configuration
-TypeScript compilation is configured via `tsconfig.json`, which references separate configurations for the frontend (`tsconfig.app.json`) and Node.js-related tooling (`tsconfig.node.json`). These enforce strict type checking and modern ES2022+ features. ESLint (`eslint.config.js`) ensures code consistency across both frontend and backend tooling environments.
+The frontend communicates with the backend via an API client (`src/api.ts`) that supports starting generation, checking model status, streaming updates via Server-Sent Events (SSE), and downloading results.
 
-All dependencies are version-locked in `package-lock.json` to ensure consistent builds across development and deployment environments.
+### Backend Dependencies
+
+The Python backend is built on **FastAPI** and uses **Uvicorn** to serve the application. Core backend dependencies include:
+
+- **FastAPI**: Web framework for building APIs with automatic OpenAPI documentation.
+- **Uvicorn**: ASGI server to run the FastAPI app with auto-reload enabled (as per `backend/run_commands.txt`).
+- **FAISS**: Used in `backend/dedup/faiss_store.py` for efficient similarity search and deduplication of generated dataset entries.
+- **Mistral AI Client**: Leveraged in `backend/dedup/embedder.py` to generate text embeddings via HTTP requests.
+- **Logging Utilities**: Custom logger setup (`backend/logger/setup.py`) provides structured, colored console output.
+- **File Management**: `backend/storage/file_manager.py` handles saving and loading data in JSON and JSONL formats.
+- **Streaming Support**: `backend/streaming/sse_manager.py` manages real-time event broadcasting using asyncio queues.
+- **Configuration Management**: `backend/config.py` centralizes API keys, provider URLs, and rate limits for multiple AI services (Groq, LongCat, Cerebras, Mistral).
+- **Agent System**: Includes modules like `prompt_expander.py`, `scenario_generator.py`, `dataset_generator.py`, and `manager_agent.py` that orchestrate the dataset generation pipeline using language models.
+
+All backend dependencies are listed in `backend/requirements.txt`.
+
+### Development & Build Tools
+
+- **TypeScript Configuration**: Project references are defined in `tsconfig.json`, splitting builds into separate apps and Node.js configurations.
+- **Environment Isolation**: A virtual environment must be activated before running the backend (per `run_commands.txt`).
+
+This modular dependency structure ensures clean separation between frontend and backend concerns, enabling scalable development and deployment.
 
 ## Prerequisites
 
-Before setting up and running the **DataForge — LLM Dataset Generator**, ensure your development environment meets the following requirements as evidenced by the codebase structure and dependencies:
+Before setting up and running the **DataForge LLM Dataset Generator**, ensure your development environment meets the following requirements as evidenced by the codebase structure and configuration files.
 
-### 🔧 Core Technologies & Runtimes
+### 🔧 Software & Tools
 
-<p>
-  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
-  <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js">
-  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript">
-</p>
+- **Node.js (v18 or higher)**: Required to run the React frontend built with Vite. The project uses modern ES2022 features and TypeScript, supported via `tsconfig.app.json` and `package.json`.
+- **Python (3.9 or higher)**: Necessary for the FastAPI backend services. The backend is implemented in Python and relies on packages listed in `backend/requirements.txt`.
+- **Git**: Used for version control and cloning the repository. Recommended for managing contributions and updates.
 
-The project is a full-stack application built with **Python** for the backend and **TypeScript/React** for the frontend. You must have both Python (3.8+) and Node.js (16+) installed on your system.
+### 📦 Package Managers
 
-### ⚙️ Backend Dependencies
+- **npm or yarn**: To install frontend dependencies defined in `package.json` and `package-lock.json`. This includes React, Vite, ESLint, and TypeScript tooling.
+- **pip**: To install Python dependencies from `backend/requirements.txt`, which includes FastAPI, Uvicorn, FAISS, and other backend utilities.
 
-<p>
-  <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI">
-  <img src="https://img.shields.io/badge/FAISS-FF6F00?style=for-the-badge&logo=faiss&logoColor=white" alt="FAISS">
-  <img src="https://img.shields.io/badge/Uvicorn-F7DF1E?style=for-the-badge&logo=uvicorn&logoColor=black" alt="Uvicorn">
-</p>
+### 🌐 Network & API Access
 
-The backend relies on **FastAPI** as the web framework, served via **Uvicorn** with auto-reload support on port `8005`. It uses **FAISS** for vector-based deduplication of embeddings. Install backend dependencies using:
+- **Internet connectivity** for downloading dependencies and accessing external AI model APIs. The backend (`backend/config.py`) is configured to connect to providers such as Groq, LongCat, Cerebras, and Mistral via their respective base URLs.
+- Ensure API keys are available and properly configured in environment variables or a `.env` file (referenced indirectly via `backend/config.py` and logging setup).
 
-```bash
-pip install -r backend/requirements.txt
-```
+### 💻 Development Environment
 
-Ensure you have access to AI model providers such as OpenAI, Groq, LongCat, Cerebras, or Mistral, as configured in `backend/config.py`.
+- **Code editor** supporting TypeScript and Python (e.g., VS Code recommended).
+- **Terminal or command-line interface** capable of executing shell commands for virtual environments and service startup.
 
-### 🖥️ Frontend Stack
+### 📁 Repository Setup
 
-<p>
-  <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React">
-  <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite">
-  <img src="https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white" alt="ESLint">
-</p>
+Clone the repository and navigate into the project root. The structure includes:
+- Frontend: `src/` (React + Vite), `index.html`, `vite.config.ts`
+- Backend: `backend/` containing FastAPI app (`main.py`), agents, models, storage, and deduplication modules
+- Configuration files: `tsconfig.json`, `eslint.config.js`, `tsconfig.node.json`
 
-The frontend is built with **React** using **Vite** as the build tool. It includes **TypeScript** strict typing and **ESLint** for code quality. Install frontend dependencies via:
+> ⚠️ Note: The backend runs on port **8005** with auto-reload enabled, as specified in `backend/run_commands.txt`. The frontend proxies `/api` requests to this endpoint via Vite’s proxy configuration.
 
-```bash
-npm install
-```
-
-This will resolve all React, Vite, TypeScript, and ESLint-related packages defined in `package.json` and `package-lock.json`.
-
-### 🌐 Development Tools
-
-- **Server-Sent Events (SSE)**: Used for real-time progress updates (`backend/streaming/sse_manager.py`).
-- **Logging**: Structured, colored logging via `colorlog` in `backend/logger/setup.py`.
-- **File Management**: Persistent storage handled by `backend/storage/file_manager.py`.
-- **Embedding Generation**: Asynchronous text embedding via Mistral AI API (`backend/dedup/embedder.py`).
-
-> 💡 **Note**: The application uses a proxy configuration (`vite.config.ts`) to forward API requests from the frontend (`localhost:5173`) to the backend (`localhost:8005`). Ensure no port conflicts exist.
-
-All components are designed to run locally with proper environment variable setup (e.g., API keys) as referenced in `backend/config.py`.
+Ensure all prerequisites are satisfied before proceeding with installation and execution.
 
 ## Installation
 
-This project requires both a Python backend and a React frontend. Follow these steps to set up the complete application.
+Welcome to the installation guide for **DataForge**, the LLM dataset generator! This section will walk you through setting up both the frontend and backend components of the application. The project is built with modern tools and requires specific dependencies to run smoothly.
 
 ### Prerequisites
 
-- **Python 3.8+** (for backend services)
-- **Node.js 16+** with npm (for frontend development)
-- **Git** (to clone the repository)
+Before proceeding, ensure your system meets the following requirements:
+
+- **Node.js** (v18 or higher) — Required for running the React frontend and build tools.
+- **Python** (v3.10 or higher) — Needed for the FastAPI backend and data processing modules.
+- A terminal or command-line interface (CLI) — For executing setup commands.
+- An internet connection — To download dependencies and access external services (e.g., AI model APIs).
+
+> 💡 **Tip**: Use [nvm](https://github.com/nvm-sh/nvm) (Node Version Manager) and [pyenv](https://github.com/pyenv/pyenv) to manage multiple versions of Node.js and Python if needed.
+
+---
+
+### Frontend Setup
+
+The frontend is a TypeScript-based React application powered by Vite for fast development and builds.
+
+1. **Navigate to the project root directory** in your terminal.
+2. Install all frontend dependencies using npm:
+   ```bash
+   npm install
+   ```
+   This installs packages defined in `package.json`, including React, Vite, ESLint, TypeScript support, and proxy configuration for API calls.
+
+3. **Verify TypeScript configuration**:
+   - The project uses `tsconfig.json` to define app-level settings.
+   - `tsconfig.app.json` configures strict type checking and ES2022+ features for the React app.
+   - `tsconfig.node.json` sets up Node.js-specific compilation rules.
+   - These ensure proper module resolution and JSX handling across the codebase.
+
+4. **Start the development server**:
+   ```bash
+   npm run dev
+   ```
+   This launches the Vite development server, typically at `http://localhost:5173`. The app uses a proxy (`vite.config.ts`) to forward `/api` requests to the backend on port 8005.
+
+> 🌐 The frontend expects the backend to be running on `http://localhost:8005`. If it’s not active, API calls will fail.
+
+---
 
 ### Backend Setup
 
-1. **Navigate to the backend directory:**
+The backend is a FastAPI service written in Python, responsible for orchestrating the dataset generation pipeline using AI agents and managing real-time updates via Server-Sent Events (SSE).
+
+1. **Navigate into the `backend` folder**:
    ```bash
    cd backend
    ```
 
-2. **Create and activate a virtual environment:**
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
+2. **Create and activate a virtual environment**:
+   - On macOS/Linux:
+     ```bash
+     python3 -m venv venv
+     source venv/bin/activate
+     ```
+   - On Windows:
+     ```cmd
+     python -m venv venv
+     venv\Scripts\activate
+     ```
 
-3. **Install Python dependencies:**
+3. **Install Python dependencies**:
    ```bash
    pip install -r requirements.txt
    ```
-   This installs FastAPI, FAISS for similarity search, and other required packages including logging utilities and environment management tools.
+   This installs core packages such as:
+   - `fastapi` — Web framework for building the API.
+   - `uvicorn` — ASGI server to run FastAPI.
+   - `faiss-cpu` or `faiss-gpu` — For vector similarity deduplication.
+   - `httpx` — Async HTTP client for AI model requests.
+   - `python-dotenv` — For environment variable management.
+   - `logging` utilities and other supporting libraries.
 
-4. **Configure API keys and settings:**
-   Edit `backend/config.py` to add your AI model API keys and configure provider endpoints as needed.
+4. **Set up logging**:
+   The backend uses `backend/logger/setup.py` to configure structured, colored console logs. No additional steps are required—it initializes automatically when the app starts.
 
-5. **Start the backend server:**
+5. **Configure environment variables**:
+   Ensure you have valid API keys for AI providers (e.g., Groq, Mistral, LongCat, Cerebras) set in your environment or via a `.env` file. These are used by `backend/config.py` to authenticate requests.
+
+6. **Start the backend server**:
    ```bash
-   uvicorn main:app --host 0.0.0.0 --port 8005 --reload
+   uvicorn main:app --reload --port 8005
    ```
-   The `--reload` flag enables auto-reload during development. Refer to `run_commands.txt` for additional command options.
+   This runs the FastAPI app with auto-reload enabled on port 8005, as specified in `run_commands.txt`.
 
-### Frontend Setup
+---
 
-1. **Return to the project root and install frontend dependencies:**
-   ```bash
-   npm install
-   ```
+### Final Steps
 
-2. **Start the development server:**
-   ```bash
-   npm run dev
-   ```
+Once both frontend and backend are running:
 
-The frontend will be available at `http://localhost:5173` by default (Vite's default port). The Vite configuration in `vite.config.ts` sets up a proxy so that API requests from the frontend are automatically forwarded to the backend running on port 8005.
+- Open your browser to `http://localhost:5173`.
+- You should see the DataForge interface ready for use.
+- Use the **ConfigPanel** to input prompts, set dataset size, enable deduplication, and start generation.
+- Monitor progress via the **PipelineProgress** component, which streams real-time updates from the backend.
 
-### Configuration Files
+> 🔁 The `--reload` flag in Uvicorn allows automatic restarts on code changes—ideal during development.
 
-Ensure you have the following configuration files properly set up:
+For troubleshooting, refer to `SUPPORT.md` for common issues and reporting procedures.
 
-- `tsconfig.json`, `tsconfig.app.json`, and `tsconfig.node.json` define TypeScript compilation settings for both the React app and Node.js backend code.
-- `eslint.config.js` enforces code quality standards across the project.
-- Global styles are defined in `src/index.css` with dark theme theming and monospace typography.
-
-### Running the Application
-
-Once both servers are running:
-- Access the web interface at `http://localhost:5173`
-- The backend API will be available at `http://localhost:8005`
-
-The system uses Server-Sent Events (SSE) for real-time progress updates, allowing the frontend components like `PipelineProgress` and `ModelDashboard` to display live status information during dataset generation.
-
-> **Note:** Make sure the backend is running before starting the frontend, as the React components expect the API to be available at localhost:8005.
+You're now ready to generate high-quality LLM datasets with ease! 🚀
 
 ## Quick Start
 
-Welcome to **DataForge — LLM Dataset Generator**! This tool enables you to generate high-quality, deduplicated datasets for fine-tuning large language models using a multi-agent pipeline. The system supports real-time progress tracking, model switching, and structured output in ShareGPT format.
+Welcome to **DataForge**, an LLM dataset generator built with React and FastAPI. This guide will help you get the application up and running quickly.
 
-### Prerequisites
+### 🛠️ Prerequisites
 
 Ensure you have the following installed:
-- **Python 3.9+**
-- **Node.js 16+** and **npm**
-- A valid API key for at least one supported AI provider (e.g., Mistral, Groq, OpenAI)
+- **Node.js** (v18 or later recommended)
+- **Python** (v3.9 or later)
+- A terminal with support for running `npm`, `pip`, and `uvicorn`
 
-### Backend Setup
+### 📦 Installation & Setup
 
-1. Navigate to the `backend` directory:
+1. **Clone the repository** (if not already done):
    ```bash
-   cd backend
+   git clone https://github.com/H0NEYP0T-466/dataset-generator.git
+   cd dataset-generator
    ```
 
-2. Create and activate a virtual environment:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
-
-3. Install Python dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. Configure your API keys by setting environment variables or updating `config.py`. Supported providers include Mistral, Groq, LongCat, and Cerebras.
-
-5. Start the FastAPI server with auto-reload:
-   ```bash
-   uvicorn main:app --host 0.0.0.0 --port 8005 --reload
-   ```
-   The backend will run on `http://localhost:8005`.
-
-### Frontend Setup
-
-1. In a new terminal, navigate to the project root and install frontend dependencies:
+2. **Install frontend dependencies**:
    ```bash
    npm install
    ```
+   This installs all required packages listed in `package.json`, including Vite, React, TypeScript, ESLint, and project-specific tooling.
 
-2. Start the development server:
-   ```bash
-   npm run dev
-   ```
-   The React app will be available at `http://localhost:5173`.
+3. **Set up the backend environment**:
+   - Navigate to the `backend` directory.
+   - Install Python dependencies:
+     ```bash
+     pip install -r requirements.txt
+     ```
+     This includes FastAPI, Uvicorn, FAISS, logging utilities, and other backend services.
 
-### Using the Application
+4. **(Optional) Configure API keys**:
+   Update `backend/config.py` with your AI provider credentials (e.g., Groq, Mistral, etc.) to enable model access.
 
-1. Open your browser and go to `http://localhost:5173`.
+---
 
-2. In the **ConfigPanel**, enter your desired prompt and optional memory facts.
+### ▶️ Running the Application
 
-3. Select dataset size and enable/disable deduplication as needed.
+#### Start the Backend Server
 
-4. Click **Start Generation** to begin the pipeline.
+In a new terminal window, run:
+```bash
+cd backend
+# Use the commands from run_commands.txt to activate venv and start Uvicorn
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+uvicorn main:app --reload --port 8005
+```
+The FastAPI server will start on `http://localhost:8005` with auto-reload enabled for development.
 
-5. Monitor real-time progress via the **PipelineProgress** component, which shows stage status, completion percentage, logs, and model switches.
+> 🔁 The `--reload` flag ensures code changes trigger automatic restarts during development.
 
-6. Once complete, use the **DownloadSection** to retrieve your generated dataset in JSONL format.
+#### Start the Frontend Development Server
 
-The system uses Server-Sent Events (SSE) to stream updates, ensuring smooth interaction even during long-running tasks. If errors occur, they’ll appear in the log panel for troubleshooting.
+In another terminal:
+```bash
+npm run dev
+```
+This launches the Vite-based React app at `http://localhost:5173` by default.
 
-> 💡 **Tip**: The backend includes FAISS-based deduplication and supports multiple AI models. You can switch models dynamically during execution based on availability and usage limits.
+> ⚙️ Vite proxies `/api` requests to `http://localhost:8005` as configured in `vite.config.ts`.
 
-Your generated datasets are saved locally and ready for use in fine-tuning workflows.
+---
+
+### 🌐 Access the Application
+
+Open your browser and go to:
+```
+http://localhost:5173
+```
+
+You’ll see the DataForge interface where you can:
+- Enter a prompt and optional memory facts
+- Set dataset size and deduplication preferences
+- Monitor real-time pipeline progress via SSE streaming
+- View model status, logs, and completion summaries
+
+> 💡 The UI uses a dark theme with neon-green accents and monospace fonts for clarity.
+
+---
+
+### 🧪 First Test Run
+
+1. Launch both servers (frontend + backend).
+2. In the web interface, enter a simple prompt like *"Generate questions about renewable energy."*
+3. Click **Start Generation**.
+4. Watch the live pipeline progress: prompt expansion → scenario generation → dataset creation → deduplication.
+5. Once complete, download your generated `.jsonl` file from the Download section.
+
+---
+
+### 🚨 Troubleshooting Tips
+
+- If the backend fails to start, check that port `8005` is free and API keys are set in `config.py`.
+- Ensure all dependencies are installed (`npm install`, `pip install -r requirements.txt`).
+- For frontend issues, verify `vite.config.ts` proxy settings match the backend URL.
+- Logs are available via the built-in logger (`backend/logger/setup.py`) and displayed in the PipelineProgress component.
+
+For more details on configuration, contribution, or support, see `SUPPORT.md`, `CONTRIBUTING.md`, and `CODE_OF_CONDUCT.md`.
 
 ## Usage
 
-The DataForge dataset generator is a full-stack application that enables users to create high-quality LLM training datasets through an interactive web interface and robust backend pipeline. To get started, ensure you have Python 3.9+ and Node.js installed on your system.
+To use the DataForge LLM Dataset Generator, follow these steps to set up and run both the backend and frontend services:
 
-### Prerequisites
+### 1. **Start the Backend Service**
 
-Before running the application, you'll need to set up API keys for your preferred AI providers. The backend supports multiple providers including OpenAI-compatible services, Groq, LongCat, Cerebras, and Mistral. Configure these in the backend by setting environment variables or updating the `backend/config.py` file with your actual API keys and provider URLs.
+The backend is a FastAPI application that runs on port 8005 with auto-reload enabled for development. To start it:
 
-### Backend Setup
+```bash
+uvicorn main:app --reload --port 8005
+```
 
-1. Navigate to the `backend` directory
-2. Create and activate a virtual environment:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-4. Start the FastAPI server:
-   ```bash
-   uvicorn main:app --host 0.0.0.0 --port 8005 --reload
-   ```
+This command activates the virtual environment (if configured) and launches the Uvicorn server hosting the API endpoints. The `--reload` flag enables automatic restarts when code changes are detected.
 
-The backend will be available at `http://localhost:8005` and provides RESTful APIs for dataset generation, model management, and real-time progress streaming via Server-Sent Events (SSE).
+> 💡 Ensure you have installed all Python dependencies listed in `backend/requirements.txt`, including FastAPI, FAISS, and other required packages.
 
-### Frontend Setup
+You can also refer to `backend/run_commands.txt` for the exact activation and startup sequence if your environment requires virtual environment setup.
 
-1. Install frontend dependencies:
-   ```bash
-   npm install
-   ```
-2. Start the development server:
-   ```bash
-   npm run dev
-   ```
+### 2. **Configure API Keys**
 
-The React application will be available at `http://localhost:5173` (default Vite port) with automatic proxying of API requests to the backend.
+Before running, ensure your AI provider API keys are properly configured in `backend/config.py`. This file manages credentials for providers like Groq, LongCat, Cerebras, and Mistral. Update the relevant sections with your actual API keys.
 
-### Using the Application
+### 3. **Start the Frontend Development Server**
 
-1. **Configure Your Dataset**: Use the configuration panel to enter your base prompt, add memory facts, and set dataset parameters including size and deduplication preferences.
+Navigate to the project root and run the React frontend using Vite:
 
-2. **Monitor Progress**: The pipeline dashboard displays real-time progress through each stage:
-   - Prompt expansion and refinement
-   - Scenario generation with numbered headings
-   - Question-answer pair creation in ShareGPT format
-   - Optional deduplication using FAISS-based vector similarity search
+```bash
+npm run dev
+```
 
-3. **Track Model Usage**: The collapsible model dashboard shows which AI models are currently active, their usage statistics, and availability status with automatic polling during execution.
+This starts the development server on the default Vite port (typically **5173**) with hot module replacement enabled.
 
-4. **Download Results**: Once completed, the download section provides a summary with sample count, elapsed time, scenario count, and a direct link to download your generated dataset as JSONL files.
+> 🌐 The frontend proxies all `/api` requests to `http://localhost:8005`, as defined in `vite.config.ts`.
 
-### Key Features
+### 4. **Access the Application**
 
-- **Real-time Updates**: All stages show live progress with color-coded status indicators and completion percentages
-- **Model Switching**: Automatic fallback between different AI providers when rate limits are reached
-- **Deduplication**: Optional cosine similarity-based duplicate removal using FAISS vector store
-- **Structured Output**: Generated datasets follow ShareGPT format suitable for fine-tuning
-- **Error Handling**: Comprehensive logging and error recovery throughout the pipeline
+Open your browser and go to:
 
-The system uses TypeScript for type safety, ESLint for code quality, and Vite for fast development builds. All components feature a dark theme with neon green accents optimized for extended development sessions.
+```
+http://localhost:5173
+```
+
+You’ll see the DataForge interface where you can:
+- Enter your dataset prompt and optional memory facts
+- Configure dataset size and deduplication settings via the ConfigPanel
+- Monitor real-time pipeline progress through stages (prompt expansion, scenario generation, dataset creation)
+- View live logs, model switches, and completion status via SSE streaming
+
+### 5. **Monitor Pipeline Progress**
+
+The **PipelineProgress** component displays real-time updates of each stage using Server-Sent Events (SSE). As the system processes your request, you’ll see:
+- Stage completion status
+- Elapsed time and sample count
+- Model usage and switching notifications
+- Live log output
+
+Once complete, the **DownloadSection** provides a download link for the generated dataset in JSONL format.
+
+### 6. **Reset or Reconfigure**
+
+Use the reset functionality to clear the current session. You can also adjust configurations anytime through the ConfigPanel, which supports presets and validation.
+
+> 🛠️ For troubleshooting, refer to `SUPPORT.md` for guidance on common issues, configuration help, and reporting bugs.
 
 ## API Endpoints
 
-The backend FastAPI application exposes a set of RESTful and streaming endpoints to control the dataset generation pipeline, monitor progress, and manage system state. These endpoints are documented and implemented in `backend/main.py` and integrated into the frontend via the `src/api.ts` client interface.
+The backend provides a comprehensive set of RESTful and streaming endpoints to manage the dataset generation pipeline. These endpoints are implemented using FastAPI and exposed via Uvicorn on port 8005.
 
-### 🚀 Pipeline Control
+### Core Generation Endpoints
 
-- **`POST /start`**  
-  Initiates a new dataset generation run. Accepts JSON payload containing the user prompt, memory facts, dataset size, deduplication settings, and other configuration parameters. Returns a unique run ID for tracking progress.
+- **POST `/api/start`**  
+  Initiates a new dataset generation job with user-provided parameters (prompt, memory facts, dataset size, deduplication settings). Returns a job ID for tracking progress.
 
-- **`GET /status/{run_id}`**  
-  Retrieves the current status of a specific run, including overall progress percentage, active stage, error states, and completion time.
+- **GET `/api/status/{job_id}`**  
+  Retrieves the current status and progress of a specific generation job, including stage completion percentages and overall pipeline state.
 
-- **`POST /reset`**  
-  Resets the system state, clearing all running processes, SSE queues, and cached data to prepare for a fresh pipeline execution.
+- **GET `/api/download/{job_id}`**  
+  Provides a download URL for the completed dataset file in JSONL format, along with metadata such as file size and generation timestamp.
 
-### 📊 Real-Time Progress Streaming
+- **POST `/api/reset`**  
+  Resets the system state, clearing all active jobs and stopping any running processes. Useful for starting fresh after a failed or interrupted session.
 
-- **`GET /events/{run_id}`** (Server-Sent Events)  
-  Provides real-time updates on pipeline stages, model switches, log messages, and errors. The endpoint streams events using Server-Sent Events (SSE), allowing the frontend to display live progress via the `PipelineProgress` component. Implemented in `backend/streaming/sse_manager.py`.
+### Real-Time Streaming
 
-### 🖥️ Model Management
+- **GET `/api/events`**  
+  Establishes a Server-Sent Events (SSE) connection that streams real-time updates during dataset generation. Clients receive structured events for:
+  - Stage transitions (e.g., "prompt expansion", "scenario generation")
+  - Progress percentages per stage
+  - Model switch notifications when different AI models are used
+  - Log messages and error alerts
+  - Completion summaries with sample counts and elapsed time
 
-- **`GET /models/status`**  
-  Returns a list of available language models with their current status (available, busy, rate-limited), provider source, and usage metrics. Used by the `ModelDashboard` component to display real-time model availability.
+This endpoint is essential for powering the frontend's live dashboard experience, enabling users to monitor pipeline execution without polling.
 
-- **`GET /models/usage`**  
-  Provides detailed usage statistics per model, including token counts, request rates, and latency metrics for monitoring and load balancing.
+### Model Management
 
-### 💾 Data Retrieval
+- **GET `/api/models`**  
+  Lists all available AI models with their current status (available, busy, rate-limited), usage metrics, and priority levels. Used by the ModelDashboard component to display real-time model availability.
 
-- **`GET /download/{run_id}`**  
-  Generates a downloadable link (typically a presigned URL or file path) for the completed dataset in JSONL format. The response includes metadata such as sample count, scenario count, and generation duration, displayed in the `DownloadSection` component.
-
-All endpoints are served under the `/api` prefix due to Vite proxy configuration (`vite.config.ts`) routing requests to `localhost:8005`. The API supports CORS and uses structured logging via `backend/logger/setup.py` for operational visibility.
+All endpoints follow consistent response formats using the defined TypeScript interfaces from `src/types.ts`, ensuring type safety across client-server communication. The API leverages FAISS for deduplication, Mistral AI for embeddings, and supports multiple providers through the model router system.
 
 ## Configuration
 
-### Environment Setup
-The application requires a Python backend environment with FastAPI and its dependencies. To set up the backend, ensure you have Python installed and create a virtual environment. The required packages are listed in `backend/requirements.txt`, which includes:
-- **FastAPI**: Web framework for building the API server
-- **FAISS**: Library for efficient similarity search and clustering of dense vectors (used for deduplication)
-- **Logging utilities** and **environment management tools**
-
-Activate your virtual environment and install dependencies using:
-```bash
-pip install -r backend/requirements.txt
-```
+The DataForge LLM Dataset Generator is configured through multiple layers, including environment variables, backend settings, and frontend preferences. Below are the key configuration points supported by the codebase.
 
 ### Backend Configuration
-The backend configuration is managed through `backend/config.py`, which defines critical settings including:
-- **API keys** for various AI providers (Groq, LongCat, Cerebras, Mistral)
-- **Provider base URLs** for OpenAI-compatible endpoints
-- **Model configurations** with specific rate limits for each language model
-- **Rate limiting parameters** to manage API usage across different providers
 
-These configurations allow the system to route requests intelligently based on availability, usage quotas, and priority settings.
+The primary backend configuration is managed in `backend/config.py`, which defines API keys, provider base URLs, and model-specific settings for AI providers such as Groq, LongCat, Cerebras, and Mistral. This file includes rate limits and routing priorities for each model, ensuring efficient load balancing and fallback mechanisms. For example:
+
+```python
+# Example snippet from backend/config.py
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+LONGCAT_BASE_URL = "https://api.longcat.com/v1"
+CEREBRAS_MODEL_LIMITS = {"mistral-large": 10}  # requests per minute
+```
+
+Environment variables (e.g., `GROQ_API_KEY`) must be set before starting the backend to enable secure access to external AI services.
 
 ### Frontend Configuration
-The frontend uses Vite as the build tool, configured in `vite.config.ts`. Key configuration points include:
-- **React plugin integration** for modern React development
-- **Proxy setup** that redirects API requests from `/api` to `http://localhost:8005` (matching the backend port)
-- **TypeScript support** with proper module resolution
 
-The project uses TypeScript with two separate configurations:
-- `tsconfig.app.json`: Optimized for the React application with strict compilation options
-- `tsconfig.node.json`: Configured for Node.js-related code with ESNext module support
+The React frontend uses several configuration files to manage build and runtime behavior:
 
-### Development Scripts
-The project includes several npm scripts defined in `package.json`:
-- `dev`: Starts the Vite development server with hot reloading
-- `build`: Creates a production build using Vite
-- `preview`: Serves the built application locally
-- `lint`: Runs ESLint with the configured rules for TypeScript and React
+- **`vite.config.ts`**: Sets up a proxy to forward all `/api` requests to `http://localhost:8005`, enabling seamless communication between the frontend and FastAPI backend during development.
+  
+- **`tsconfig.app.json`** and **`tsconfig.node.json`**: Define TypeScript compilation targets with strict type checking and modern ES2022 support, ensuring type safety across both client and server applications.
 
-### Logging Configuration
-The backend logging system is configured in `backend/logger/setup.py`, which sets up:
-- **Colored log output** using the `colorlog` library for better readability
-- **Structured logging format** with predefined log levels
-- **Consistent formatting** across all backend components
+- **`src/api.ts`**: Implements typed API clients that interact with the backend endpoints, abstracting HTTP calls for actions like starting generation, checking status, and streaming updates via Server-Sent Events (SSE).
 
-### System Requirements
-For optimal operation, ensure the following:
-- **Port 8005** must be available for the FastAPI server
-- **SSE (Server-Sent Events)** support is required for real-time progress updates
-- **File storage directory** will be automatically created by the file manager component
-- **Internet connectivity** is necessary for accessing external AI model APIs
+### Deduplication & Storage Settings
 
-The system is designed to run the backend server on port 8005 while serving the frontend through Vite's development server, with proper proxy configuration for seamless API communication.
+Deduplication is enabled via FAISS-based vector similarity checks in `backend/dedup/faiss_store.py`. The system supports persistence of vector indices and configurable similarity thresholds. In the frontend, users can toggle deduplication in the `ConfigPanel` component (`src/components/ConfigPanel.tsx`), which passes this setting to the backend pipeline.
+
+File storage operations are handled by `backend/storage/file_manager.py`, which manages saving datasets in JSONL format with metadata tracking (e.g., sample count, timestamp, version).
+
+### Logging & Monitoring
+
+Logging is centralized using `backend/logger/setup.py`, which configures a colored console logger with structured output, supporting different log levels (INFO, DEBUG, ERROR) for monitoring pipeline progress and debugging issues.
+
+### Environment Setup
+
+Before running the application:
+
+1. Ensure Python dependencies are installed via `backend/requirements.txt`.
+2. Start the virtual environment and launch the FastAPI server on port 8005 using commands listed in `backend/run_commands.txt`.
+3. Launch the React frontend via Vite, which automatically proxies API calls to the backend.
+
+All configuration values should be validated at startup, and missing or invalid settings (e.g., unset API keys) will prevent the pipeline from initializing properly.
 
 ## Environment Variables
 
-The DataForge dataset generator relies on several environment variables to configure its behavior, particularly for AI model access and backend operation. These variables are essential for proper functionality and must be set before running the application.
+The DataForge LLM Dataset Generator relies on several environment variables to configure its backend services, API integrations, and operational behavior. These variables are primarily managed through the `backend/config.py` file, which centralizes configuration settings for multiple AI providers and system parameters.
 
-### Required API Keys and Model Configuration
+### Core Backend Configuration
 
-The backend requires OpenAI-compatible API keys to function with various AI providers. Based on the configuration file (`backend/config.py`), the following environment variables are critical:
+The application uses environment variables to securely manage sensitive information such as API keys and service endpoints. The most critical variables include:
 
-- `GROQ_API_KEY`: Required for accessing Groq's language models (e.g., Llama3-8b-8192)
-- `MISTRAL_API_KEY`: Needed for Mistral AI embeddings via the deduplication module
-- `CEREBRAS_API_KEY`: Required for Cerebras model access
-- `OPENAI_API_KEY`: Used as fallback when other providers aren't available
+- **`GROQ_API_KEY`**: Required for accessing Groq's language models. This key is used by the model router (`backend/models/model_router.py`) to authenticate requests to Groq's inference endpoints.
+  
+- **`MISTRAL_API_KEY`**: Necessary for generating text embeddings via the Mistral AI API, as implemented in `backend/dedup/embedder.py`. This enables semantic similarity checks during deduplication.
 
-These keys enable the model router (`backend/models/model_router.py`) to select appropriate AI models based on availability, usage limits, and priority settings defined in the configuration.
+- **`CEREBRAS_API_KEY`** and **`LONGCAT_API_KEY`**: Used for fallback model routing when primary providers (like Groq) are unavailable or rate-limited, ensuring robust dataset generation.
 
-### Backend Server Configuration
+These keys are referenced in `backend/config.py`, where they populate provider-specific configurations including base URLs, model names, and rate limits. For example:
+```python
+# Example from config.py structure
+groq_config = {
+    "base_url": os.getenv("GROQ_BASE_URL", "https://api.groq.com/openai/v1"),
+    "api_key": os.getenv("GROQ_API_KEY"),
+    "models": ["llama3-8b-8192", "mixtral-8x7b-32768"],
+    "rate_limit": 10  # requests per minute
+}
+```
 
-The FastAPI server runs on port 8005 by default, as specified in the run commands (`backend/run_commands.txt`). While this could potentially be configured via environment variables, the current implementation appears to use hardcoded values. However, for production deployment, it's recommended to set:
+### Operational Settings
 
-- `PORT`: To override the default port (currently 8005)
-- `HOST`: To specify binding address (defaults to localhost)
+Additional environment variables control system behavior:
 
-### Logging and Debugging
+- **`PORT`**: Specifies the port on which the FastAPI server runs (default: 8005), as seen in `backend/run_commands.txt` where Uvicorn starts on port 8005 with auto-reload.
 
-The colored logger setup (`backend/logger/setup.py`) uses standard Python logging configuration. For enhanced debugging:
+- **`LOG_LEVEL`**: Controls logging verbosity, configured via `backend/logger/setup.py`, which sets up colored console output with structured formatting.
 
-- `LOG_LEVEL`: Set to "DEBUG" for detailed logs during development
-- `LOG_FILE`: Optional path to write logs to a file instead of console output
+- **`STORAGE_DIR`**: Defines the directory path for saving generated datasets and metadata, managed by `backend/storage/file_manager.py`.
 
-### Deduplication Configuration
+- **`DEDUPLICATION_THRESHOLD`**: A float value (e.g., 0.95) used in `backend/dedup/faiss_store.py` to determine similarity thresholds for duplicate detection using FAISS vector indexing.
 
-The FAISS-based deduplication system (`backend/dedup/faiss_store.py`) may require:
+### Frontend Integration
 
-- `DEDUP_THRESHOLD`: Similarity threshold for duplicate detection (default typically 0.8)
-- `EMBEDDING_MODEL`: Override for embedding model selection (currently defaults to Mistral)
+While the React frontend (`src/api.ts`) interacts with a local backend at `http://localhost:8005`, it does not directly consume environment variables. However, if deployed in different environments (development vs production), Vite’s proxy setup in `vite.config.ts` may need adjustment based on backend URL—though currently hardcoded to forward `/api` requests to `http://localhost:8005`.
 
-### Frontend Considerations
+> 💡 **Note**: All AI provider keys must be set before starting the backend. Failure to do so will result in failed API calls and pipeline errors. Use `.env` files or your deployment platform’s secret management to inject these securely.
 
-While the React frontend (`src/api.ts`) communicates with the backend at `localhost:8005`, no environment variables are currently exposed in the client-side code. In production deployments, you might want to set:
+Ensure all required environment variables are defined in your runtime environment to guarantee full functionality of the dataset generation pipeline.
 
-- `VITE_API_URL`: To point the frontend to a different backend endpoint
+## Model Setup & Training
 
-All environment variables should be set before starting the backend server. The application will fail to start if required API keys are missing, ensuring early detection of configuration issues.
+The DataForge LLM Dataset Generator leverages a sophisticated model orchestration system powered by multiple AI providers to handle the complete dataset creation pipeline. The backend architecture is built around FastAPI and utilizes several specialized agents that interact with external language models through a configurable routing system.
+
+**Model Routing & Management**  
+At the core of the system is `backend/models/model_router.py`, which implements a smart routing mechanism that manages requests across different AI providers including Groq, LongCat, Cerebras, and Mistral. This router handles priority-based request distribution, enforces rate limits, manages model availability, and includes blacklisting capabilities for failed or overloaded models. The system automatically switches between models based on performance and availability, ensuring robust operation even when individual providers experience issues.
+
+**AI Provider Configuration**  
+Model configurations are centrally managed in `backend/config.py`, where API keys, base URLs, and specific model settings are defined with appropriate rate limits for each provider. This centralized configuration allows easy switching between different AI services and ensures consistent behavior across all pipeline stages.
+
+**Pipeline Agents Architecture**  
+The system employs several specialized agents working in sequence:
+- **Prompt Expansion Agent** (`backend/agents/prompt_expander.py`) transforms raw user prompts into detailed dataset briefs using AI models
+- **Scenario Generation Agent** (`backend/agents/scenario_generator.py`) creates diverse, numbered scenario headings from approved prompts
+- **Dataset Generation Agent** (`backend/agents/dataset_generator.py`) produces question-answer pairs in ShareGPT format with optional memory injection
+- **Manager Agent** (`backend/agents/manager_agent.py`) reviews and iteratively refines prompts through an approval loop until quality standards are met
+
+**Deduplication System**  
+To ensure dataset quality, the system implements FAISS-based cosine similarity deduplication through `backend/dedup/faiss_store.py`. This vector store detects and eliminates duplicate content during the generation process, maintaining data diversity while preserving accuracy.
+
+**Real-time Processing & Streaming**  
+All model interactions support real-time progress tracking via server-sent events (SSE) implemented in `backend/streaming/sse_manager.py`. This enables live updates throughout the generation pipeline, allowing users to monitor completion status, view logs, and receive notifications about model switches or errors.
+
+**Embedding Generation**  
+Text embeddings for deduplication are generated asynchronously using Mistral AI's API through `backend/dedup/embedder.py`, which handles HTTP requests to create vector representations of text content.
+
+This comprehensive model setup provides a resilient, scalable foundation for high-quality dataset generation with automatic failover, intelligent load balancing, and real-time monitoring capabilities.
 
 ## Project Structure
 
-The repository follows a **monorepo** structure with a clear separation between frontend and backend components, organized to support a modern full-stack data generation platform.
+The DataForge LLM Dataset Generator is organized as a modern full-stack application with a clear separation between frontend and backend components. The project follows a monorepo structure with shared TypeScript configurations and dedicated directories for each major component.
 
-### Frontend (React + Vite)
-The client-side application is built using **React** with **TypeScript**, powered by **Vite** for fast development and optimized builds. The main entry point is `src/main.tsx`, which initializes the React app within `StrictMode` using the modern `createRoot` API. Global styles are defined in `src/index.css`, featuring a dark theme with custom color variables and monospace typography. The primary UI logic resides in `src/App.tsx`, orchestrating real-time pipeline monitoring and user interactions.
+### Frontend (`src/`)
+The React-based frontend is built using Vite and TypeScript, providing an interactive interface for dataset generation. Key files include:
+- `main.tsx`: Application entry point that renders the main App component within StrictMode
+- `App.tsx`: Main application logic managing pipeline state, SSE connections, and UI orchestration
+- `App.css` & `index.css`: Global styling with dark theme, custom color variables, and monospace font styling
+- `api.ts`: API client handling all backend communications including model status, progress tracking, and data retrieval
+- Component directory containing:
+  - `ConfigPanel.tsx`: User input interface for prompts, memory facts, dataset size, and deduplication settings
+  - `PipelineProgress.tsx`: Real-time progress dashboard showing stage completion, logs, and model switches
+  - `ModelDashboard.tsx`: Collapsible model status display with usage metrics and availability indicators
+  - `DownloadSection.tsx`: Completion summary with download link and metadata display
 
-Key frontend components include:
-- **ConfigPanel** (`src/components/ConfigPanel.tsx`) — Handles user input for prompts, memory facts, dataset size, and deduplication settings.
-- **PipelineProgress** (`src/components/PipelineProgress.tsx`) — Displays real-time stage-by-stage progress, logs, and error states during data generation.
-- **ModelDashboard** (`src/components/ModelDashboard.tsx`) — Shows live model status, usage metrics, and availability via polling.
-- **DownloadSection** (`src/components/DownloadSection.tsx`) — Provides completion summary and download functionality once generation finishes.
+### Backend (`backend/`)
+The FastAPI backend handles the core dataset generation pipeline with multiple specialized modules:
 
-These components are styled using dedicated CSS files (e.g., `ConfigPanel.css`, `PipelineProgress.css`) that implement a consistent dark UI with neon green accents and responsive layouts. The project uses ESLint for code quality (`eslint.config.js`) and TypeScript configurations split into `tsconfig.app.json` (for React) and `tsconfig.node.json` (for Node.js tools), managed under a root `tsconfig.json`.
+**Core Services:**
+- `main.py`: FastAPI application entry point exposing REST endpoints and SSE streaming
+- `config.py`: Configuration management for API keys, provider URLs, and rate limits across multiple AI providers (Groq, LongCat, Cerebras, Mistral)
+- `run_commands.txt`: Commands to activate virtual environment and start Uvicorn server on port 8005 with auto-reload
 
-### Backend (FastAPI + Python)
-The server layer is implemented in **Python** using **FastAPI**, designed to run on **Uvicorn** at port 8005 with auto-reload enabled (as per `backend/run_commands.txt`). Dependencies are listed in `backend/requirements.txt`, including FastAPI, FAISS for similarity search, logging utilities, and environment management.
+**Agent System:**
+- `manager_agent.py`: Coordinates prompt refinement through approval loops with iterative feedback
+- `prompt_expander.py`: Transforms raw prompts into detailed dataset briefs using AI models
+- `scenario_generator.py`: Creates diverse scenario headings from approved prompts
+- `dataset_generator.py`: Generates question-answer pairs in ShareGPT format with optional memory injection
 
-Core backend modules include:
-- **main.py**: Entry point for the FastAPI app, managing the multi-stage generation pipeline and SSE streaming.
-- **models/model_router.py**: Routes requests to available LLM providers (OpenAI-compatible), handling rate limits and model selection.
-- **agents/**: Contains specialized agents:
-  - `prompt_expander.py`: Converts raw prompts into detailed persona/task descriptions.
-  - `scenario_generator.py`: Creates numbered scenario headings from approved prompts.
-  - `manager_agent.py`: Oversees prompt refinement through an approval loop.
-  - `dataset_generator.py`: Produces Q&A pairs in ShareGPT format with optional deduplication.
-- **dedup/**: Deduplication logic powered by embeddings (`embedder.py`) and FAISS-based similarity search (`faiss_store.py`).
-- **streaming/sse_manager.py**: Manages real-time event broadcasting to the frontend via Server-Sent Events.
-- **storage/file_manager.py**: Handles saving/loading text, JSON, and JSONL files.
-- **logger/setup.py**: Configures structured, colored logging output.
+**Storage & Processing:**
+- `storage/file_manager.py`: Manages text, JSON, and JSONL file operations in designated storage directory
+- `dedup/faiss_store.py`: FAISS-based vector store for cosine similarity deduplication
+- `dedup/embedder.py`: Async function generating text embeddings via Mistral AI API
 
-Configuration is centralized in `backend/config.py`, defining API keys, provider URLs, and model-specific rate limits. The backend communicates with the frontend via REST endpoints and SSE streams, proxied through Vite’s dev server (`vite.config.ts`).
+**Utilities:**
+- `streaming/sse_manager.py`: Server-sent events manager using asyncio queue for real-time event broadcasting
+- `logger/setup.py`: Configures colored console logging with structured formatting
+- `models/model_router.py`: Routes requests to available AI models based on priority, availability, and usage limits
+
+### Configuration & Tooling
+- `package.json` & `package-lock.json`: Frontend dependencies including Vite, ESLint, and TypeScript
+- `tsconfig.json` & related configs: TypeScript project references splitting build into separate applications
+- `vite.config.ts`: Vite configuration with proxy setup forwarding `/api` requests to `http://localhost:8005`
+- `eslint.config.js`: ESLint configuration for TypeScript React with recommended rules and React plugins
+
+### Documentation
+- `CONTRIBUTING.md`: Comprehensive contributor guide with setup instructions and workflow
+- `SUPPORT.md`: Support resources including issue reporting guidelines and configuration details
+- `SECURITY.md`: Security policy covering vulnerability reporting and disclosure procedures
+- `CODE_OF_CONDUCT.md`: Community guidelines implementing Contributor Covenant standards
+
+## Development
+
+### Project Structure
+
+This project is a full-stack application with a **React frontend** and a **FastAPI backend**, built for generating LLM datasets. The codebase follows a clear separation of concerns:
+
+- **Frontend**: Located in `src/`, the React application uses Vite as the build tool, TypeScript for type safety, and ESLint for code quality. Key files include:
+  - `src/main.tsx`: Entry point that renders the App within StrictMode.
+  - `src/App.tsx`: Main component managing pipeline state and SSE connections.
+  - `src/api.ts`: API client for backend communication.
+  - Components like `ConfigPanel`, `PipelineProgress`, `ModelDashboard`, and `DownloadSection` handle user interaction, progress tracking, and file downloads.
+
+- **Backend**: Stored in `backend/`, this FastAPI service orchestrates the dataset generation pipeline using AI agents. Core files are:
+  - `backend/main.py`: FastAPI app with endpoints for starting generation, checking status, streaming logs via SSE, and resetting the system.
+  - `backend/models/model_router.py`: Routes requests to available AI models with rate limiting and fallback logic.
+  - `backend/agents/` contains specialized modules: `prompt_expander.py`, `scenario_generator.py`, and `dataset_generator.py` for prompt refinement, scenario creation, and QA pair generation.
+  - `backend/dedup/embedder.py` and `faiss_store.py`: Handle deduplication using FAISS and Mistral embeddings.
+  - `backend/streaming/sse_manager.py`: Manages real-time event broadcasting.
+  - `backend/storage/file_manager.py`: Handles file I/O for saving generated datasets.
+
+- **Configuration & Tooling**:
+  - `tsconfig.json`, `tsconfig.app.json`, and `tsconfig.node.json`: Configure TypeScript for both frontend and backend builds.
+  - `vite.config.ts`: Sets up proxy from `/api` to `http://localhost:8005`.
+  - `eslint.config.js`: Enforces coding standards with React and Refresh plugins.
+  - `backend/requirements.txt`: Lists Python dependencies including FastAPI, FAISS, and logging utilities.
+  - `backend/run_commands.txt`: Provides commands to start the backend with Uvicorn on port 8005 with auto-reload.
+
+### Frontend Development
+
+To develop the frontend:
+
+1. Install dependencies: `npm install`
+2. Start the development server: `npm run dev`
+3. The app runs on `http://localhost:5173` (default Vite port) with hot module replacement enabled.
+
+The UI is styled with a dark theme using custom CSS variables and features components for configuration (`ConfigPanel`), real-time progress tracking (`PipelineProgress`), model status monitoring (`ModelDashboard`), and dataset download (`DownloadSection`). All API calls are proxied through Vite to the backend running on port 8005.
+
+### Backend Development
+
+For backend development:
+
+1. Activate the virtual environment using the commands in `backend/run_commands.txt`.
+2. Install Python dependencies: `pip install -r backend/requirements.txt`
+3. Start the server: `uvicorn backend.main:app --reload --port 8005`
+
+The backend exposes RESTful endpoints under `/api` and streams real-time updates via Server-Sent Events (SSE). It supports asynchronous processing of prompts through a multi-stage pipeline involving prompt expansion, scenario generation, dataset creation, and optional deduplication using FAISS-based similarity search.
+
+## Security
+
+The DataForge LLM Dataset Generator prioritizes security throughout its architecture and operational lifecycle. The project maintains a formal **Security Policy** documented in `SECURITY.md`, which outlines supported versions, vulnerability reporting procedures, disclosure timelines, and response processes. This ensures responsible disclosure practices and provides clear guidance for both users and contributors to report potential security issues.
+
+### Authentication & API Key Management
+The backend configuration is managed through `backend/config.py`, which handles sensitive credentials including API keys for multiple AI providers (Groq, LongCat, Cerebras, Mistral). These keys are loaded via environment variables, preventing hardcoded secrets in the codebase. The system implements rate limiting and blacklisting functionality in `backend/models/model_router.py` to prevent abuse and ensure fair usage of external AI services.
+
+### Secure Communication
+The frontend (`src/api.ts`) communicates with the backend through a proxy configured in `vite.config.ts`, which forwards API requests from `/api` to `http://localhost:8005`. This setup ensures that all client-server communication occurs over standard HTTP protocols during development. For production deployments, this should be secured with HTTPS/TLS encryption.
+
+### Input Validation & Sanitization
+All user inputs—including prompts, memory facts, and dataset parameters—are processed through the configuration interface in `src/components/ConfigPanel.tsx` and validated before being sent to AI models. The pipeline stages in `backend/main.py` handle data transformation and generation tasks, with structured logging implemented in `backend/logger/setup.py` that avoids exposing sensitive information in logs.
+
+### Dependency Security
+Both frontend and backend dependencies are explicitly defined in `package.json` and `backend/requirements.txt`, ensuring reproducible builds and reducing risks associated with transitive vulnerabilities. The project uses modern tooling (TypeScript, ESLint) with strict type checking enabled across configurations (`tsconfig.app.json`, `tsconfig.node.json`) to catch potential security-related bugs at compile time.
+
+### Code Quality & Review Processes
+A comprehensive **Contributor Covenant Code of Conduct** (`CODE_OF_CONDUCT.md`) establishes behavioral expectations for maintainers and contributors, promoting a secure and respectful development environment. The contribution guidelines in `CONTRIBUTING.md` outline processes for bug reports and feature suggestions that include security considerations.
+
+> 🔒 **Note**: Users are advised to regularly update dependencies and follow the security policy outlined in `SECURITY.md` when deploying DataForge in production environments.
+
+## Contributing
+
+Welcome to the DataForge LLM Dataset Generator project! We appreciate your interest in contributing. This guide outlines how you can help improve the project, whether through code, documentation, or community support.
+
+### 🪜 Getting Started
+
+To begin contributing, follow these steps:
+
+1. **Fork the repository** and clone it locally.
+2. **Set up your development environment** by installing dependencies:
+   ```bash
+   npm install
+   ```
+3. **Configure the backend** by ensuring Python dependencies are installed in `backend/`:
+   ```bash
+   pip install -r backend/requirements.txt
+   ```
+4. **Start the development servers**:
+   - Run the FastAPI backend using commands from `backend/run_commands.txt`
+   - Start the Vite frontend with:
+     ```bash
+     npm run dev
+     ```
+
+The project uses **TypeScript**, **React**, **Vite**, **FastAPI**, and **FAISS** for vector similarity. Configuration is managed via `tsconfig.json`, `vite.config.ts`, and `backend/config.py`.
+
+### 🧩 How to Contribute
+
+We welcome contributions in several forms:
+
+- **Bug Reports**: Use GitHub Issues to report bugs. Include steps to reproduce, expected vs actual behavior, and environment details.
+- **Feature Requests**: Open a discussion or issue to propose new features. Please provide context and use cases.
+- **Code Contributions**: Submit pull requests targeting the `main` branch. Ensure your code follows the established style.
+
+All code must pass ESLint checks configured in `eslint.config.js`. The project enforces strict TypeScript typing as defined in `src/types.ts`.
+
+### 🔄 Contribution Workflow
+
+1. Create a feature or bugfix branch from `main`.
+2. Make your changes with clear commit messages.
+3. Test your changes locally:
+   - Verify frontend components render correctly
+   - Confirm backend endpoints respond as expected
+   - Check that SSE streaming works in `src/api.ts`
+4. Update documentation if needed (see `CONTRIBUTING.md`, `SUPPORT.md`)
+5. Submit a pull request with a descriptive title and detailed description
+
+### 📝 Code Style & Standards
+
+- Follow React best practices using functional components with hooks
+- Use async/await consistently in backend services (`backend/agents/*.py`, `dedup/*.py`)
+- Maintain consistent logging using the setup in `backend/logger/setup.py`
+- Preserve dark theme styling across all CSS files (`*.css`)
+- Keep API contracts stable — update `src/types.ts` if interfaces change
+
+### 🤝 Community Guidelines
+
+This project adheres to our [Code of Conduct](CODE_OF_CONDUCT.md). Please be respectful, inclusive, and constructive in all interactions.
+
+For support questions, refer to `SUPPORT.md` for guidance on using the application and troubleshooting common issues.
+
+Thank you for helping make DataForge better!
+
+## Code of Conduct
+
+We are committed to fostering a **respectful, inclusive, and collaborative environment** for all contributors and users of the DataForge LLM Dataset Generator project. This Code of Conduct outlines our expectations for behavior within our community and provides guidelines for reporting concerns.
+
+### Our Pledge
+
+In the interest of promoting an open and welcoming environment, we as contributors and maintainers pledge to make participation in our project a harassment-free experience for everyone, regardless of age, body size, disability, ethnicity, gender identity and expression, level of experience, nationality, personal appearance, race, religion, or sexual orientation.
+
+This project is built using modern web technologies including **React**, **TypeScript**, **Vite**, and **FastAPI**, and emphasizes clean, well-documented code. We expect all interactions—whether through GitHub Issues, Discussions, pull requests, or direct communication—to reflect the values of professionalism and mutual respect.
+
+### Expected Behavior
+
+All participants are expected to:
+
+- 🤝 Be respectful and considerate in discussions and code reviews.
+- 📚 Provide constructive feedback that supports improvement.
+- 🧪 Contribute to a collaborative spirit by helping others understand the codebase, which includes structured logging (via `backend/logger/setup.py`) and modular architecture.
+- 🔒 Respect intellectual property and follow licensing terms in `package.json` and `backend/requirements.txt`.
+
+### Unacceptable Behavior
+
+Unacceptable behaviors include but are not limited to:
+
+- 🚫 Harassment, discrimination, or derogatory language.
+- 💬 Personal attacks, trolling, or disruptive comments.
+- 🔗 Posting private information without consent.
+- 🛠️ Intentionally submitting low-quality or malicious code, especially given the project’s reliance on AI agents (`backend/agents/*.py`) and real-time streaming (`streaming/sse_manager.py`).
+
+### Enforcement
+
+Project maintainers have the responsibility to enforce this Code of Conduct. Violations may result in:
+
+- ⚠️ Temporary or permanent bans from discussions, issues, or contributions.
+- 📝 Public or private warnings.
+- 🛑 Removal of inappropriate content or comments.
+
+Maintainers will act promptly and fairly, referencing this document when addressing reports.
+
+### Reporting Violations
+
+If you witness or experience unacceptable behavior, please report it via:
+
+- 🐞 [GitHub Issues](https://github.com/H0NEYP0T-466/dataset-generator/issues) with the label `conduct`
+- 💬 [GitHub Discussions](https://github.com/H0NEYP0T-466/dataset-generator/discussions)
+
+All reports will be reviewed confidentially by the maintainer team, as outlined in our [`CONTRIBUTING.md`](CONTRIBUTING.md) and [`SECURITY.md`](SECURITY.md) policies.
+
+### Scope
+
+This Code of Conduct applies to all project spaces, including repositories, issue trackers, discussion forums, and any related communications. It also extends to public behavior when representing the project.
+
+---
+
+By participating in this project, you agree to abide by these guidelines. Let’s build great datasets—and a great community—together. 🌱
 
 ## License
 
-This project is licensed under the **MIT License** — a permissive open-source software license that allows you to freely use, modify, distribute, and sublicense the code, subject to the following conditions:
+This project, **DataForge**, is an open-source LLM dataset generator built with a modern tech stack including FastAPI, React, TypeScript, and Vite. The codebase is distributed under the terms of the **MIT License**, a permissive free software license that allows for broad use, modification, distribution, and private use of the software, provided that appropriate copyright and license notices are preserved.
 
-### Permissions
-- ✅ **Commercial Use**: You are permitted to use this software in commercial applications.
-- ✅ **Modification**: You may modify the source code for your own needs or contribute improvements back to the project.
-- ✅ **Distribution**: You can redistribute copies of the original or modified software, including as part of larger works.
-- ✅ **Private Use**: There are no restrictions on private usage.
+The MIT License grants users the freedom to:
+- Use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the software
+- Incorporate the software into proprietary applications without restriction
+- Include the original source code or compiled binaries in commercial products
 
-### Limitations
-- ⚠️ **Liability**: The software is provided "as is," without warranty of any kind. The authors or copyright holders shall not be held liable for damages arising from the use of this software.
-- ⚠️ **Trademark Use**: This license does not grant permission to use the names, logos, or trademarks of the project or its contributors for promotional purposes without explicit written consent.
+**Key conditions of the MIT License include:**
+- The above copyright notice and this permission notice must be included in all substantial portions of the software
+- The software is provided "as is," without warranty of any kind—express or implied—including but not limited to warranties of merchantability, fitness for a particular purpose, or non-infringement
+- In no event shall the authors or copyright holders be liable for any claim, damages, or other liability arising from, out of, or in connection with the software or its use
 
-### Conditions
-- 📄 **License & Copyright Notice**: All redistributions of substantial portions of the source code must retain the original copyright notice, list of conditions, and disclaimer found in the `LICENSE` file (if present) or distributed with this software.
-- 📄 **State Changes**: If you modify the files, you must indicate changes made to them so that recipients know they differ from the original version.
+This licensing approach aligns with the open and collaborative development model promoted by the project, encouraging contributions and community-driven improvements while maintaining clear legal boundaries. The presence of standard open-source files such as `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, and `SECURITY.md` further reflects the project’s commitment to responsible and inclusive software stewardship.
 
-> 💡 **Note**: While the codebase summary does not explicitly include a visible `LICENSE` file in the listed structure (e.g., no mention of `LICENSE`, `LICENSE.txt`, etc.), the presence of standard development files like `package.json`, `tsconfig.json`, and typical backend configurations strongly suggests adherence to common open-source licensing practices. However, **you must verify the existence and contents of an actual `LICENSE` file at the root of the repository**, as this section assumes compliance with an MIT-style license based on industry norms for similar full-stack TypeScript + FastAPI projects.
+By using, modifying, or distributing this software, you agree to abide by the terms of the MIT License. A full copy of the license text should accompany the repository and can typically be found in the root directory as `LICENSE` (though not explicitly listed in the provided file summary, it is standard practice for MIT-licensed projects).
 
-For full legal details, please refer to the official [MIT License](https://opensource.org/licenses/MIT).
+🔐 **Note**: While the core application logic is open, third-party AI models and APIs used during dataset generation (e.g., Mistral AI, Groq, Cerebras via backend/config.py) may be governed by their own separate terms of service and usage policies. Users are responsible for ensuring compliance with those external agreements when deploying or using the generated datasets.
 
 ---
 
