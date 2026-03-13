@@ -14,8 +14,8 @@ from streaming.sse_manager import send_event
 
 log = get_logger("dataset_generator")
 
-SYSTEM_PROMPT = """You are a dataset sample generator. Given a scenario and a dataset \
-description, produce question-answer pairs in ShareGPT format.
+SYSTEM_PROMPT = """You are a dataset sample generator in a dataset generation pipeline for llm finetuning. Given a scenario and a dataset \
+description make sure to produce the dataset that will be enough for adapting an persona you can make more number of samples per senario if you think something important i missing or adding more will help llm adapt better persona, produce question-answer pairs in ShareGPT format.
 
 Return ONLY a JSON array of objects. Each object must follow this exact schema:
 {
@@ -27,7 +27,6 @@ Return ONLY a JSON array of objects. Each object must follow this exact schema:
 
 Rules:
 - Questions must be realistic and varied
-- Answers must be detailed, helpful, and accurate
 - Do NOT add any commentary outside the JSON array
 - Ensure diversity across samples"""
 

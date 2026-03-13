@@ -75,13 +75,25 @@ async def _run_pipeline(req: GenerateRequest) -> None:
 
     try:
         # Stage 1 — Expand prompt
-        expanded = await expand_prompt(req.prompt, req.memory_facts or [])
+        expanded = await expand_prompt(
+            req.prompt,
+            req.memory_facts or [],
+            sample_count=req.dataset_size,
+        )
 
         # Stage 2 — Manager approval loop
-        approved = await approval_loop(expanded, req.prompt, req.memory_facts or [])
+        approved = await approval_loop(
+            expanded,
+            req.prompt,
+            req.memory_facts or [],
+            sample_count=req.dataset_size,
+        )
 
         # Stage 3 — Scenario generation
-        scenarios = await generate_scenarios(approved)
+        scenarios = await generate_scenarios(
+            approved,
+            target_dataset_size=req.dataset_size,
+        )
 
         # Stage 4 — Parallel dataset generation
         samples = await run_all_generators(

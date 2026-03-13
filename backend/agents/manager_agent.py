@@ -73,6 +73,7 @@ async def approval_loop(
     expanded_prompt: str,
     user_prompt: str,
     memory_facts: list[str] | None = None,
+    sample_count: int | None = None,
 ) -> str:
     """Run the manager review loop (max 3 rejections, then auto-approve)."""
     await send_event("stage_update", {"stage": 2, "status": "running", "label": "Manager review"})
@@ -109,6 +110,7 @@ async def approval_loop(
         current_prompt = await expand_prompt(
             f"{user_prompt}\n\nPrevious feedback to address:\n{feedback}",
             memory_facts,
+            sample_count=sample_count,
         )
 
     save_text("stage2_approved_prompt.txt", current_prompt)
