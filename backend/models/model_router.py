@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 import time
 from typing import Any
 
@@ -37,6 +38,20 @@ def _usage(model: str) -> dict[str, int]:
     return _model_usage[model]
 
 
+def _parse_limit(raw_limit: Any) -> int | None:
+    """Return numeric limit if finite, otherwise None for unlimited/unknown."""
+    if isinstance(raw_limit, int):
+        return raw_limit
+    if isinstance(raw_limit, str):
+        lowered = raw_limit.strip().lower()
+        if lowered == "unlimited":
+            return None
+        digits = re.sub(r"[^0-9]", "", lowered)
+        if digits:
+            return int(digits)
+    return None
+
+
 def _is_available(model: str) -> bool:
     cfg = MODEL_CONFIGS.get(model)
     if cfg is None:
@@ -48,7 +63,8 @@ def _is_available(model: str) -> bool:
             return False
         del _blacklisted[model]
     usage = _usage(model)
-    if usage["requests"] >= cfg["daily_limit"]:
+    daily_limit = _parse_limit(cfg.get("daily_limit"))
+    if daily_limit is not None and usage["requests"] >= daily_limit:
         return False
     return True
 
